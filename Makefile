@@ -6,11 +6,11 @@ all: clean $(OUT) link
 	echo $(OUT)
 
 clean:
-	rm -rf out
+	rm -rf game out
 	mkdir out
 
 out/%.o:
-	gcc -c src/$(subst .,/,$(patsubst out/%.o,%,$@)).cpp -o $@
+	g++ -c -I src src/$(subst .,/,$(patsubst out/%.o,%,$@)).cpp -o $@
 
 link:
-	gcc -fPIC $(OUT) -o game
+	g++ -fPIC $(OUT) -o game
