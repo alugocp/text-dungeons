@@ -16,6 +16,15 @@ void TerminalGame::start() {
   while (1) {
     // Run dungeon room function and call display on result
     View v = this->dungeon->curr_room();
+    if (this->dungeon->bag_enabled) {
+      ADD_OPT(v, "Search bag", [this](){ this->dungeon->bag_open = true; });
+    }
+    if (this->dungeon->bag_open) {
+      v = this->dungeon->search_bag();
+      v.desc = "You open your bag";
+      ADD_OPT(v, "Close bag", NULL_FUNC);
+      this->dungeon->bag_open = false;
+    }
     this->dungeon->prev_room = this->dungeon->curr_room;
     this->display(v);
 

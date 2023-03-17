@@ -9,6 +9,7 @@
 #define SET_DUNGEON(d) [this](){ this->next_dungeon = new d(); }
 #define NULL_ROOM [](){ return NEW_VIEW(); }
 #define NULL_FUNC [](){ }
+#define NO_ITEM -1
 
 // Option type used for player choice
 struct Option {
@@ -24,9 +25,14 @@ struct View {
 
 // Dungeon class to be overridden by content definition
 class Dungeon {
+protected:
+  int held_item = NO_ITEM;
 public:
   Room curr_room, prev_room = NULL_ROOM;
   Dungeon *next_dungeon;
+  bool bag_open = false;
+  bool bag_enabled = true;
+  virtual View search_bag() = 0;
 };
 
 // Interface for main game class

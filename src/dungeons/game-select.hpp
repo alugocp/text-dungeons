@@ -1,10 +1,11 @@
 #include "dungeon.hpp"
 
 class GameSelect : public Dungeon {
-public:
-  GameSelect();
-
 private:
   View welcome();
   View dungeon_select();
+
+public:
+  GameSelect();
+  View search_bag();
 };
