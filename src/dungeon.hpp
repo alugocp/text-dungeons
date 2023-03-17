@@ -1,3 +1,6 @@
+#ifndef DUNGEON_FILE
+#define DUNGEON_FILE
+
 #include <functional>
 #include <string>
 #include <vector>
@@ -8,6 +11,7 @@
   View { {}, "" }
 #define SET_ROOM(func) [this]() { this->curr_room = AS_ROOM(func); }
 #define SET_DUNGEON(d) [this]() { this->next_dungeon = new d(); }
+#define EXIT_DUNGEON() [this]() { this->next_dungeon = NULL; }
 #define NULL_ROOM []() { return NEW_VIEW(); }
 #define NULL_FUNC []() {}
 #define NO_ITEM -1
@@ -46,3 +50,5 @@ protected:
 public:
   virtual void start() = 0;
 };
+
+#endif

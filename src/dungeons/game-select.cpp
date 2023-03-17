@@ -1,4 +1,5 @@
 #include "dungeons/game-select.hpp"
+#include "dungeons/spire-of-bones.hpp"
 
 GameSelect::GameSelect() {
   this->curr_room = AS_ROOM(GameSelect::welcome);
@@ -16,7 +17,7 @@ View GameSelect::welcome() {
 View GameSelect::dungeon_select() {
   View v = NEW_VIEW();
   v.desc = "Please choose a dungeon";
-  ADD_OPT(v, "Spire of Bones", SET_DUNGEON(GameSelect));
+  ADD_OPT(v, "Spire of Bones", SET_DUNGEON(SpireOfBones));
   return v;
 }
 
