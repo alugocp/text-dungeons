@@ -1,9 +1,9 @@
-#include <iostream>
 #include "dungeons/game-select.hpp"
+#include <iostream>
 
 class TerminalGame : public Game {
 private:
-  Dungeon* dungeon = new GameSelect();
+  Dungeon *dungeon = new GameSelect();
 
 protected:
   void display(View v);
@@ -17,7 +17,7 @@ void TerminalGame::start() {
     // Run dungeon room function and call display on result
     View v = this->dungeon->curr_room();
     if (this->dungeon->bag_enabled) {
-      ADD_OPT(v, "Search bag", [this](){ this->dungeon->bag_open = true; });
+      ADD_OPT(v, "Search bag", [this]() { this->dungeon->bag_open = true; });
     }
     if (this->dungeon->bag_open) {
       v = this->dungeon->search_bag();
@@ -55,7 +55,7 @@ void TerminalGame::display(View v) {
   std::cout << "\033[0m";
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   TerminalGame *game = new TerminalGame();
   game->start();
 }

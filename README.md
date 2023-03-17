@@ -11,4 +11,7 @@ make
 
 # Runs the game
 ./game
+
+# Formats the code
+make format
 ```

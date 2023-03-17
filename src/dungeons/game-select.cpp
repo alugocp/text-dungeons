@@ -20,6 +20,4 @@ View GameSelect::dungeon_select() {
   return v;
 }
 
-View GameSelect::search_bag() {
-  return NEW_VIEW();
-}
+View GameSelect::search_bag() { return NEW_VIEW(); }
