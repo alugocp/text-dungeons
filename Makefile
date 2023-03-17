@@ -11,7 +11,7 @@ clean:
 	mkdir out
 
 out/%.o:
-	g++ -c -I src src/$(subst .,/,$(patsubst out/%.o,%,$@)).cpp -o $@
+	g++ -c -std=c++11 -I src src/$(subst .,/,$(patsubst out/%.o,%,$@)).cpp -o $@
 
 link:
 	g++ -fPIC $(OUT) -o game

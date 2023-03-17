@@ -35,6 +35,7 @@ public:
   bool bag_open = false;
   bool bag_enabled = true;
   virtual View search_bag() = 0;
+  virtual ~Dungeon() = default;
 };
 
 // Interface for main game class

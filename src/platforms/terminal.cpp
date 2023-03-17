@@ -31,7 +31,10 @@ void TerminalGame::start() {
     // Wait for input
     int i;
     std::cin >> i;
-    if (i > 0 && i <= v.opts.size()) {
+    if (i == 0) {
+      break;
+    }
+    if (i <= v.opts.size()) {
       v.opts[i - 1].func();
     }
     std::cout << "\n";
