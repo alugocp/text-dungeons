@@ -2,8 +2,7 @@
 #include "dungeons/spire-of-bones.hpp"
 
 GameSelect::GameSelect() {
-  this->curr_room = AS_ROOM(GameSelect::welcome);
-  this->next_dungeon = this;
+  INIT_DUNGEON(GameSelect::welcome);
   this->bag_enabled = false;
 }
 
