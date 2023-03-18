@@ -121,8 +121,7 @@ View SpireOfBones::top_of_spiral() {
         "You climb up the spiral staircase and emerge upon a long hallway. "
         "There are two doorways along the left side with a lever in between "
         "them. The far side of the hallway is obscured in darkness.";
-  }
-  if (this->prev_room == ROOM_NAME(SpireOfBones::top_of_shaft)) {
+  } else {
     v.desc = "You go back to the long hallway. Where will you go from here?";
   }
   ADD_OPT(v, "Back to the spiral staircase",
@@ -154,9 +153,57 @@ View SpireOfBones::top_of_spiral_just_pulled_lever() {
   return v;
 }
 
-// TODO implement this
 View SpireOfBones::skeleton_arena_1() {
   View v = NEW_VIEW();
+  if (this->arrows > 0) {
+    v.desc = "You enter through the doorway. The room is empty but for some "
+             "dusty old bones.";
+    ADD_OPT(v, "Back to the hallway", SET_ROOM(SpireOfBones::top_of_spiral));
+  } else {
+    v.desc = "You enter through the doorway and find a reanimated skeleton. It "
+             "charges at you with a dagger.";
+    ADD_OPT(v, "Strike back with your fist",
+            SET_SAME_ROOM(SpireOfBones::skeleton_arena_1_strike));
+    ADD_OPT(v, "Dodge out of the way",
+            SET_SAME_ROOM(SpireOfBones::skeleton_arena_1_dodge));
+    if (this->held_item == ITEM_BOW) {
+      ADD_OPT(v, "Swing with your bow",
+              SET_SAME_ROOM(SpireOfBones::skeleton_arena_1_swing));
+    }
+  }
+  return v;
+}
+
+View SpireOfBones::skeleton_arena_1_strike() {
+  View v = this->skeleton_arena_1();
+  if (this->player_hurt) {
+    v.desc = "The skeleton pierces your heart as you raise your fist to strike "
+             "it once more. You collapse as the life fades from your eyes.";
+    v.opts.clear();
+    ADD_OPT(v, "Okay", EXIT_DUNGEON());
+    return v;
+  }
+  v.desc = "You manage to land a blow on the skeleton's chest, wounding it "
+           "slightly. The ghoul's dagger slices your arm just below the "
+           "shoulder. You are bleeding out.";
+  this->player_hurt = true;
+  return v;
+}
+
+View SpireOfBones::skeleton_arena_1_dodge() {
+  View v = this->skeleton_arena_1();
+  v.desc = "You duck and roll out of the way as the skeleton strikes with its "
+           "dagger. It winds up to strike again.";
+  return v;
+}
+
+View SpireOfBones::skeleton_arena_1_swing() {
+  View v = NEW_VIEW();
+  v.desc =
+      "You swing your bow at the skeleton, shattering the ghoul into a flurry "
+      "of dusty bones. You pick up 3 arrows from the skeleton's remains.";
+  ADD_OPT(v, "Back to the hallway", SET_ROOM(SpireOfBones::top_of_spiral));
+  this->arrows = 3;
   return v;
 }
 
@@ -236,8 +283,9 @@ View SpireOfBones::top_of_shaft() {
              "runs the width of the shaft along the ceiling. Several pebbles "
              "are strewn about the floor around you.";
     if (!this->item_bow) {
-      v.desc = " You can just barely make out a wooden bow wedged partway down "
-               "the shaft.";
+      v.desc +=
+          " You can just barely make out a wooden bow wedged partway down "
+          "the shaft.";
     }
   }
   if (this->prev_room == ROOM_NAME(SpireOfBones::down_in_shaft)) {
@@ -288,21 +336,144 @@ View SpireOfBones::down_in_shaft() {
   return v;
 }
 
-// TODO implement this
 View SpireOfBones::bot_of_spiral() {
   View v = NEW_VIEW();
+  if (this->prev_room == ROOM_NAME(SpireOfBones::spiral_staircase)) {
+    v.desc = "You step down the spiral stairway until you get to the bottom.";
+  }
+  if (this->prev_room == ROOM_NAME(SpireOfBones::croc_pit)) {
+    v.desc = "You climb up from the pit to the bottom of the spiral staircase.";
+  }
+  v.desc += " There is a lever on the wall. The last few steps have caved into "
+            "a large pit below.";
+  ADD_OPT(v, "Up the staircase", SET_ROOM(SpireOfBones::spiral_staircase));
+  ADD_OPT(v, this->item_rope ? "Jump down" : "Climb down",
+          SET_ROOM(SpireOfBones::croc_pit));
+  if (!this->lever_pulled_2) {
+    ADD_OPT(v, "Pull the lever", [this]() { this->lever_pulled_2 = true; });
+  }
+  if (this->held_item == ITEM_ROPE) {
+    ADD_OPT(v, "Tie rope to the lever", [this]() { this->item_rope = false; });
+  }
+  if (!this->lever_pulled_1 && !this->lever_pulled_2) {
+    v.desc += "The pit is filled with murky water.";
+  } else if (!this->croc_killed) {
+    if (this->lever_pulled_1 != this->lever_pulled_2) {
+      v.desc += " You can just barely make out the shape of a great beast "
+                "lurking about the waters of the pit.";
+    } else {
+      v.desc +=
+          " An enormous crocodilian hisses at you from the bottom of the pit.";
+    }
+    if (this->held_item == ITEM_BOW && this->arrows > 0) {
+      ADD_OPT(v, "Fire an arrow", SET_SAME_ROOM(SpireOfBones::kill_croc));
+    }
+  }
   return v;
 }
 
-// TODO implement this
+View SpireOfBones::kill_croc() {
+  View v = bot_of_spiral();
+  v.desc = "You fire an arrow at the dark mass. It convulses for a while "
+           "before rising stiffly to the water's surface.";
+  this->croc_killed = true;
+  this->arrows--;
+  return v;
+}
+
 View SpireOfBones::croc_pit() {
   View v = NEW_VIEW();
+  if (this->prev_room == ROOM_NAME(SpireOfBones::bot_of_spiral)) {
+    bool pulled1 = this->lever_pulled_1 != this->lever_pulled_2;
+    bool pulled2 = this->lever_pulled_1 && this->lever_pulled_2;
+    if (this->item_rope) {
+      v.desc = "You jump down into the pit below.";
+      if (pulled2) {
+        v.desc += " Your legs shatter as they hit the recently drained floor "
+                  "of the pit.";
+        ADD_OPT(v, "Okay", EXIT_DUNGEON());
+        return v;
+      }
+    } else {
+      v.desc = "You climb down the rope into the pit below.";
+    }
+    if (!this->croc_killed) {
+      if (pulled2) {
+        v.desc += " The hissing crocodile snaps at you, breaking your spine "
+                  "like a twig.";
+      } else if (pulled1) {
+        v.desc += " The vague shape bursts forth from the water, revealing a "
+                  "giant crocodilian horror. You are ripped in half by the "
+                  "beast's great jaws.";
+      } else {
+        v.desc +=
+            " You wade in the water before feeling a tug at your ankle. You "
+            "are pulled below the surface and drowned by unseen jaws.";
+      }
+      ADD_OPT(v, "Okay", EXIT_DUNGEON());
+      return v;
+    }
+    if (this->item_rope && !pulled2) {
+      v.desc += " You wade in the water for a bit. You appear to be stuck in "
+                "this pit with no escape. You drown after a while.";
+      ADD_OPT(v, "Okay", EXIT_DUNGEON());
+      return v;
+    }
+    if (!this->item_rope) {
+      ADD_OPT(v, "Climb back up the rope",
+              SET_ROOM(SpireOfBones::bot_of_spiral));
+      if (!this->lever_pulled_2) {
+        ADD_OPT(v, "Yank the rope to pull the lever",
+                [this]() { this->lever_pulled_2 = true; });
+      }
+    }
+    if (pulled2) {
+      ADD_OPT(v, "Go through the next door",
+              SET_ROOM(SpireOfBones::stone_room));
+    }
+    return v;
+  }
+  if (this->prev_room == ROOM_NAME(SpireOfBones::stone_room)) {
+    v.desc = "You come back to the drained crocodile pit.";
+    ADD_OPT(v, "Climb up the rope", SET_ROOM(SpireOfBones::bot_of_spiral));
+    ADD_OPT(v, "Go back", SET_ROOM(SpireOfBones::stone_room));
+  }
   return v;
 }
 
-// TODO implement this
 View SpireOfBones::stone_room() {
   View v = NEW_VIEW();
+  if (this->raven_trade) {
+    v.desc = "The raven picks and pecks at its precious pebbles.";
+  } else {
+    v.desc = "You enter a small room with an opening in the ceiling. The "
+             "opening extends up beyond your field of sight. An animated stone "
+             "raven sits on the far side of the room, playing with a glowing "
+             "rock in its stony beak.";
+    if (this->thrown_pebbles > 0) {
+      v.desc += " There are " + std::to_string(this->thrown_pebbles) +
+                " pebbles strewn about the ground.";
+      ADD_OPT(v, "Try the pebbles",
+              SET_SAME_ROOM(SpireOfBones::stone_room_trade));
+    }
+  }
+  ADD_OPT(v, "Go through next door", SET_ROOM(SpireOfBones::skeleton_arena_2));
+  ADD_OPT(v, "Go back", SET_ROOM(SpireOfBones::croc_pit));
+  return v;
+}
+
+View SpireOfBones::stone_room_trade() {
+  View v = this->stone_room();
+  v.desc = "You pick up the " + std::to_string(this->thrown_pebbles) +
+           " pebbles and offer them to the raven.";
+  if (this->thrown_pebbles == 3) {
+    this->raven_trade = true;
+    this->item_lodestone = true;
+    v.desc += " It drops the glowing rock in excitement over the smaller "
+              "stones. You take this rock and place it in your bag.";
+  } else {
+    v.desc += " It does not seem interested in the smaller rocks.";
+  }
   return v;
 }
 
