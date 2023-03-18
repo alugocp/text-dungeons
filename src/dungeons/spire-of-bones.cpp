@@ -1,8 +1,19 @@
 #include "dungeons/spire-of-bones.hpp"
 #define ITEM_ROPE 0
 #define ITEM_BOSS_KEY 1
+#define ITEM_BOW 2
+#define ITEM_AXE 3
 
 SpireOfBones::SpireOfBones() { INIT_DUNGEON(SpireOfBones::lobby); }
+
+View SpireOfBones::search_bag() {
+  View v = NEW_VIEW();
+  ITEM_OPT(v, "Rope", this->item_rope, ITEM_ROPE);
+  ITEM_OPT(v, "Boss Key", this->item_boss_key, ITEM_BOSS_KEY);
+  ITEM_OPT(v, "Bow", this->item_bow, ITEM_BOW);
+  ITEM_OPT(v, "Axe", this->item_axe, ITEM_AXE);
+  return v;
+}
 
 View SpireOfBones::lobby() {
   View v = NEW_VIEW();
@@ -62,11 +73,17 @@ View SpireOfBones::hallway_to_spiral_try_door() {
   if (this->held_item == ITEM_BOSS_KEY) {
     v.desc = "You unlock the door using your key. It creaks open and you enter "
              "inside.";
-    ADD_OPT(v, "Continue", nullptr); // boss room
+    ADD_OPT(v, "Continue", SET_ROOM(SpireOfBones::boss_room));
   } else {
     v = this->hallway_to_spiral();
     v.desc = "The door is locked.";
   }
+  return v;
+}
+
+// TODO implement this
+View SpireOfBones::boss_room() {
+  View v = NEW_VIEW();
   return v;
 }
 
@@ -75,29 +92,117 @@ View SpireOfBones::spiral_staircase() {
   if (this->prev_room == ROOM_NAME(SpireOfBones::hallway_to_spiral)) {
     v.desc = "You enter the spiral staircase. Which way will you go?";
     ADD_OPT(v, "Go back out", SET_ROOM(SpireOfBones::hallway_to_spiral));
-    ADD_OPT(v, "Ascend", nullptr);  // Top of spiral
-    ADD_OPT(v, "Descend", nullptr); // Bottom of spiral
+    ADD_OPT(v, "Ascend", SET_ROOM(SpireOfBones::top_of_spiral));
+    ADD_OPT(v, "Descend", SET_ROOM(SpireOfBones::bot_of_spiral));
   }
-  /* if (this->prev_room == ROOM_NAME(SpireOfBones::top_of_spiral)) {
-      v.desc = "You walk down the spiral staircase until you get to a doorway.
-  Which way will you go?"; ADD_OPT(v, "Go out the doorway",
-  SET_ROOM(SpireOfBones::hallway_to_spiral)); ADD_OPT(v, "Go back up", nullptr);
-  // Top of spiral ADD_OPT(v, "Continue downwards", nullptr); // Bottom of
-  spiral
+  if (this->prev_room == ROOM_NAME(SpireOfBones::top_of_spiral)) {
+    v.desc = "You walk down the spiral staircase until you get to a doorway. "
+             "Which way will you go?";
+    ADD_OPT(v, "Go out the doorway", SET_ROOM(SpireOfBones::hallway_to_spiral));
+    ADD_OPT(v, "Go back up", SET_ROOM(SpireOfBones::top_of_spiral));
+    ADD_OPT(v, "Continue downwards", SET_ROOM(SpireOfBones::bot_of_spiral));
   }
   if (this->prev_room == ROOM_NAME(SpireOfBones::bot_of_spiral)) {
-      v.desc = "You walk up the spiral staircase until you get to a doorway.
-  Which way will you go?"; ADD_OPT(v, "Go out the doorway",
-  SET_ROOM(SpireOfBones::hallway_to_spiral)); ADD_OPT(v, "Continue upwards",
-  nullptr); // Top of spiral ADD_OPT(v, "Go back down", nullptr); // Bottom of
-  spiral
-  } */
+    v.desc = "You walk up the spiral staircase until you get to a doorway. "
+             "Which way will you go?";
+    ADD_OPT(v, "Go out the doorway", SET_ROOM(SpireOfBones::hallway_to_spiral));
+    ADD_OPT(v, "Continue upwards", SET_ROOM(SpireOfBones::top_of_spiral));
+    ADD_OPT(v, "Go back down", SET_ROOM(SpireOfBones::bot_of_spiral));
+  }
   return v;
 }
 
-View SpireOfBones::search_bag() {
+View SpireOfBones::top_of_spiral() {
   View v = NEW_VIEW();
-  ITEM_OPT(v, "Rope", this->item_rope, ITEM_ROPE);
-  ITEM_OPT(v, "Boss Key", this->item_boss_key, ITEM_BOSS_KEY);
+  if (this->prev_room == ROOM_NAME(SpireOfBones::spiral_staircase)) {
+    v.desc =
+        "You climb up the spiral staircase and emerge upon a long hallway. "
+        "There are two doorways along the left side with a lever in between "
+        "them. The far side of the hallway is obscured in darkness.";
+    ADD_OPT(v, "Go through the first door",
+            SET_ROOM(SpireOfBones::skeleton_arena_1));
+    ADD_OPT(v, "Pull the lever", [this]() {
+      this->lever_pulled_1 = !this->lever_pulled_1;
+      std::function<void()> func =
+          SET_SAME_ROOM(SpireOfBones::top_of_spiral_just_pulled_lever);
+      func();
+    });
+    ADD_OPT(v, "Go through the second door",
+            SET_ROOM(SpireOfBones::trapped_hallway));
+    ADD_OPT(v, "Examine the far end of the hallway",
+            SET_ROOM(SpireOfBones::top_of_shaft));
+  }
+  return v;
+}
+
+View SpireOfBones::top_of_spiral_just_pulled_lever() {
+  View v = this->top_of_spiral();
+  if (this->lever_pulled_1) {
+    v.desc = "You hear the sound of water draining as you flip the lever. It "
+             "seems to be coming from the dark side of the hallway.";
+  } else {
+    v.desc = "You flip the lever again but nothing happens.";
+    this->lever_pulled_1 = true;
+  }
+  return v;
+}
+
+// TODO implement this
+View SpireOfBones::skeleton_arena_1() {
+  View v = NEW_VIEW();
+  return v;
+}
+
+// TODO implement this
+View SpireOfBones::trapped_hallway() {
+  View v = NEW_VIEW();
+  return v;
+}
+
+// TODO implement this
+View SpireOfBones::axe_room() {
+  View v = NEW_VIEW();
+  return v;
+}
+
+// TODO implement this
+View SpireOfBones::top_of_shaft() {
+  View v = NEW_VIEW();
+  return v;
+}
+
+// TODO implement this
+View SpireOfBones::down_in_shaft() {
+  View v = NEW_VIEW();
+  return v;
+}
+
+// TODO implement this
+View SpireOfBones::bot_of_spiral() {
+  View v = NEW_VIEW();
+  return v;
+}
+
+// TODO implement this
+View SpireOfBones::croc_pit() {
+  View v = NEW_VIEW();
+  return v;
+}
+
+// TODO implement this
+View SpireOfBones::stone_room() {
+  View v = NEW_VIEW();
+  return v;
+}
+
+// TODO implement this
+View SpireOfBones::skeleton_arena_2() {
+  View v = NEW_VIEW();
+  return v;
+}
+
+// TODO implement this
+View SpireOfBones::goblin_lair() {
+  View v = NEW_VIEW();
   return v;
 }

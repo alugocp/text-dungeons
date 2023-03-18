@@ -3,8 +3,6 @@ OUT := $(foreach source,$(SRC),out/$(subst /,.,$(patsubst src/%.cpp,%,$(source))
 SRC_WITH_HEADERS := $(wildcard src/*.*pp src/**/*.*pp)
 
 all: clean $(OUT) link
-	echo $(SRC)
-	echo $(OUT)
 
 clean:
 	rm -rf game out
