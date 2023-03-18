@@ -41,7 +41,7 @@ void TerminalGame::start() {
     std::cout << "\n";
 
     // Set dungeon based on current one so that we can move between them
-    if (this->dungeon->curr_room != curr_room) {
+    if (this->dungeon->curr_room.compare(curr_room)) {
       this->dungeon->prev_room = curr_room;
     }
     this->dungeon = this->dungeon->next_dungeon;

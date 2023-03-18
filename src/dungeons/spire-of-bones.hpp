@@ -6,8 +6,10 @@ private:
   bool item_boss_key = false;
   bool item_bow = false;
   bool item_axe = false;
+  bool item_lodestone = false;
   bool lever_pulled_1 = false;
   bool lever_pulled_2 = false;
+  int thrown_pebbles = 0;
   int arrows = 0;
   View lobby();
   View hallway_to_spiral();
@@ -18,8 +20,10 @@ private:
   View top_of_spiral_just_pulled_lever();
   View skeleton_arena_1();
   View trapped_hallway();
+  View fell_through_the_trap();
   View axe_room();
   View top_of_shaft();
+  View top_of_shaft_throw_pebble();
   View down_in_shaft();
   View bot_of_spiral();
   View croc_pit();
