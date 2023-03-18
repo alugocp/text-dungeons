@@ -42,7 +42,7 @@ void TerminalGame::start() {
 
     // Set dungeon based on current one so that we can move between them
     if (this->dungeon->curr_room != curr_room) {
-        this->dungeon->prev_room = curr_room;
+      this->dungeon->prev_room = curr_room;
     }
     this->dungeon = this->dungeon->next_dungeon;
     if (this->dungeon == NULL) {

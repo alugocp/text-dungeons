@@ -10,13 +10,23 @@
 #define ROOM_NAME(func) #func
 #define NEW_VIEW()                                                             \
   View { {}, "" }
-#define INIT_DUNGEON(func) this->curr_room_func = AS_ROOM(func); this->curr_room = ROOM_NAME(func); this->next_dungeon = this;
-#define SET_ROOM(func) [this]() { this->curr_room_func = AS_ROOM(func); this->curr_room = ROOM_NAME(func); }
+#define INIT_DUNGEON(func)                                                     \
+  this->curr_room_func = AS_ROOM(func);                                        \
+  this->curr_room = ROOM_NAME(func);                                           \
+  this->next_dungeon = this;
+#define SET_ROOM(func)                                                         \
+  [this]() {                                                                   \
+    this->curr_room_func = AS_ROOM(func);                                      \
+    this->curr_room = ROOM_NAME(func);                                         \
+  }
 #define SET_SAME_ROOM(func) [this]() { this->curr_room_func = AS_ROOM(func); }
 #define SET_DUNGEON(d) [this]() { this->next_dungeon = new d(); }
 #define EXIT_DUNGEON() [this]() { this->next_dungeon = NULL; }
 #define HOLD_ITEM(item) [this]() { this->held_item = item; }
-#define ITEM_OPT(v, name, flag, value) if (flag) { ADD_OPT(v, name, HOLD_ITEM(value)); }
+#define ITEM_OPT(v, name, flag, value)                                         \
+  if (flag) {                                                                  \
+    ADD_OPT(v, name, HOLD_ITEM(value));                                        \
+  }
 #define NO_ITEM -1
 
 // Option type used for player choice
