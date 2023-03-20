@@ -76,6 +76,7 @@ View SpireOfBones::hallway_to_spiral_try_door() {
     v.desc = "You unlock the door using your key. It creaks open and you enter "
              "inside.";
     ADD_OPT(v, "Continue", SET_ROOM(SpireOfBones::boss_room));
+    this->item_boss_key = false;
   } else {
     v = this->hallway_to_spiral();
     v.desc = "The door is locked.";
@@ -83,9 +84,37 @@ View SpireOfBones::hallway_to_spiral_try_door() {
   return v;
 }
 
-// TODO implement this
 View SpireOfBones::boss_room() {
   View v = NEW_VIEW();
+  if (this->prev_command == "Run") {
+    v.desc = "You try to run but the great skeletal serpent snaps your spine "
+             "in half.";
+    ADD_OPT(v, "Okay", EXIT_DUNGEON());
+    return v;
+  }
+  if (this->prev_command == "Swing your axe") {
+    v.desc = "You swing your axe at the great serpent, shattering the beast "
+             "into a thousand bony pieces. You have bested this dungeon!";
+    ADD_OPT(v, "Okay", EXIT_DUNGEON());
+    return v;
+  }
+  if (this->prev_command == "Fire an arrow") {
+    v.desc = "You let loose an arrow at the terrible beast. It bounces off the "
+             "great skull, but the beast does not yet strike.";
+    this->arrows--;
+  } else {
+    v.desc = "You enter the final room of the dungeon. A great bony serpent "
+             "stirs in the middle of the room, its phantom coils wrapped "
+             "around a handsome gold cache. This will be a daunting battle. "
+             "The serpent prepares to strike.";
+  }
+  ADD_OPT(v, "Run", nullptr);
+  if (this->held_item == ITEM_AXE) {
+    ADD_OPT(v, "Swing your axe", nullptr);
+  }
+  if (this->arrows > 0 && this->held_item == ITEM_BOW) {
+    ADD_OPT(v, "Fire an arrow", nullptr);
+  }
   return v;
 }
 
@@ -374,8 +403,13 @@ View SpireOfBones::bot_of_spiral() {
 
 View SpireOfBones::kill_croc() {
   View v = bot_of_spiral();
-  v.desc = "You fire an arrow at the dark mass. It convulses for a while "
-           "before rising stiffly to the water's surface.";
+  if (this->lever_pulled_1 && this->lever_pulled_2) {
+    v.desc = "You fire an arrow at the hissing beast. It writhes in pain "
+             "before finally dying.";
+  } else {
+    v.desc = "You fire an arrow at the dark mass. It convulses for a while "
+             "before rising stiffly to the water's surface.";
+  }
   this->croc_killed = true;
   this->arrows--;
   return v;
@@ -457,17 +491,26 @@ View SpireOfBones::stone_room() {
               SET_SAME_ROOM(SpireOfBones::stone_room_trade));
     }
   }
-  ADD_OPT(v, "Go through next door", SET_ROOM(SpireOfBones::skeleton_arena_2));
-  ADD_OPT(v, "Go back", SET_ROOM(SpireOfBones::croc_pit));
+  if (this->prev_room == ROOM_NAME(SpireOfBones::croc_pit)) {
+    ADD_OPT(v, "Go through next door",
+            SET_ROOM(SpireOfBones::skeleton_arena_2));
+    ADD_OPT(v, "Go back", SET_ROOM(SpireOfBones::croc_pit));
+  }
+  if (this->prev_room == ROOM_NAME(SpireOfBones::skeleton_arena_2)) {
+    ADD_OPT(v, "Go through next door", SET_ROOM(SpireOfBones::croc_pit));
+    ADD_OPT(v, "Go back", SET_ROOM(SpireOfBones::skeleton_arena_2));
+  }
   return v;
 }
 
 View SpireOfBones::stone_room_trade() {
+  if (this->thrown_pebbles == 3) {
+    this->raven_trade = true;
+  }
   View v = this->stone_room();
   v.desc = "You pick up the " + std::to_string(this->thrown_pebbles) +
            " pebbles and offer them to the raven.";
   if (this->thrown_pebbles == 3) {
-    this->raven_trade = true;
     this->item_lodestone = true;
     v.desc += " It drops the glowing rock in excitement over the smaller "
               "stones. You take this rock and place it in your bag.";
@@ -477,14 +520,99 @@ View SpireOfBones::stone_room_trade() {
   return v;
 }
 
-// TODO implement this
 View SpireOfBones::skeleton_arena_2() {
   View v = NEW_VIEW();
+  if (this->prev_room == ROOM_NAME(SpireOfBones::stone_room)) {
+    if (this->skeletons_alive == 0) {
+      v.desc = "You exit the raven's lair and step back into the skeletons' "
+               "room. Their remains lay strewn across the floor.";
+    } else {
+      v.desc = "You enter a room with two reanimated skeletal warriors staring "
+               "you down. One decides to charge at you, sword in hand. The "
+               "other stretches its bow to fire an arrow at you.";
+      ADD_OPT(v, "Dodge", nullptr);
+      if (this->held_item == ITEM_BOW) {
+        ADD_OPT(v, "Fire an arrow", nullptr);
+      }
+      if (this->held_item == ITEM_AXE) {
+        ADD_OPT(v, "Swing your axe", nullptr);
+      }
+      if (this->prev_command == "Fire an arrow") {
+        if (this->skeletons_alive == 2) {
+          v.desc = "You fire an arrow at the charging skeleton. It drops to "
+                   "the ground. The remaining skeleton notches an arrow.";
+        } else {
+          v.desc = "You fire an arrow at the second skeleton. It drops to the "
+                   "ground.";
+        }
+        this->skeletons_alive--;
+        this->arrows--;
+      }
+      if (this->prev_command == "Swing your axe") {
+        if (this->skeletons_alive == 2) {
+          v.desc = "You swing your axe at the charging skeleton. It drops to "
+                   "the ground. The remaining skeleton notches an arrow.";
+        } else {
+          v.desc = "You swing your axe at the second skeleton. It drops to the "
+                   "ground.";
+        }
+        this->skeletons_alive--;
+      }
+      if (this->prev_command == "Dodge") {
+        if (this->skeletons_alive == 2) {
+          v.desc = "You duck and roll out of the charging skeleton's path. You "
+                   "are struck by an arrow from the second skeleton.";
+          if (this->player_hurt) {
+            v.desc += " The arrow pierces the cauterized wound just below your "
+                      "shoulder and you bleed to death.";
+            v.opts.clear();
+            ADD_OPT(v, "Okay", EXIT_DUNGEON());
+          }
+          this->player_hurt = true;
+        } else {
+          v.desc = "You duck and roll out of the way of the skeleton's arrow. "
+                   "It prepares to fire another one.";
+        }
+      }
+    }
+    if (this->skeletons_alive == 0) {
+      if (this->prev_command == "Fire an arrow" ||
+          this->prev_command == "Swing your axe") {
+        v.desc += " You have killed both of the skeletons!";
+      }
+      v.opts.clear();
+      ADD_OPT(v, "Continue", SET_ROOM(SpireOfBones::goblin_lair));
+      ADD_OPT(v, "Go back", SET_ROOM(SpireOfBones::stone_room));
+    }
+  }
+  if (this->prev_room == ROOM_NAME(SpireOfBones::goblin_lair)) {
+    v.desc = "You exit the dark hall and step back into the skeletons' room. "
+             "Their remains lay strewn across the floor.";
+    ADD_OPT(v, "Continue", SET_ROOM(SpireOfBones::stone_room));
+    ADD_OPT(v, "Go back", SET_ROOM(SpireOfBones::goblin_lair));
+  }
   return v;
 }
 
-// TODO implement this
 View SpireOfBones::goblin_lair() {
   View v = NEW_VIEW();
+  if (this->item_boss_key) {
+    v.desc = "You come upon the goblin's hallway. It is entranced with the "
+             "glowing rock.";
+  } else {
+    v.desc =
+        "You come upon a dark hallway. A decrepit goblin asks if you'd like to "
+        "trade for his pretty silver key. He wants something shinier.";
+    if (this->held_item == ITEM_LODESTONE) {
+      ADD_OPT(v, "Trade the glowing rock", nullptr);
+    }
+    if (this->prev_command == "Trade the glowing rock") {
+      v.desc = "You trade the glowing rock for the goblin's key. The "
+               "diminutive creature is elated.";
+      this->item_lodestone = false;
+      this->item_boss_key = true;
+    }
+  }
+  ADD_OPT(v, "Go back", SET_ROOM(SpireOfBones::skeleton_arena_2));
   return v;
 }

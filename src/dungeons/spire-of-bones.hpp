@@ -12,6 +12,7 @@ private:
   bool croc_killed = false;
   bool player_hurt = false;
   bool raven_trade = false;
+  int skeletons_alive = 2;
   int thrown_pebbles = 0;
   int arrows = 0;
   View lobby();

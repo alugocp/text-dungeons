@@ -44,7 +44,7 @@ struct View {
 // Dungeon class to be overridden by content definition
 class Dungeon {
 public:
-  std::string curr_room, prev_room = "";
+  std::string curr_room, prev_room = "", prev_command = "";
   Room curr_room_func;
   Dungeon *next_dungeon;
   bool bag_open = false;

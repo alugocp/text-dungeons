@@ -17,14 +17,13 @@ void TerminalGame::start() {
     // Run dungeon room function and call display on result
     View v = this->dungeon->curr_room_func();
     if (this->dungeon->bag_enabled) {
-      ADD_OPT(v, "Search bag", [this]() { this->dungeon->bag_open = true; });
+      ADD_OPT(v, "Open bag", [this]() { this->dungeon->bag_open = true; });
       this->dungeon->held_item = NO_ITEM;
     }
     if (this->dungeon->bag_open) {
       v = this->dungeon->search_bag();
       v.desc = "You open your bag";
       ADD_OPT(v, "Close bag", nullptr);
-      this->dungeon->bag_open = false;
     }
     this->display(v);
 
@@ -35,13 +34,20 @@ void TerminalGame::start() {
     if (i == 0) {
       break;
     }
-    if (i <= v.opts.size() && v.opts[i - 1].func != nullptr) {
-      v.opts[i - 1].func();
+    if (i <= v.opts.size()) {
+      if (!this->dungeon->bag_open && v.opts[i - 1].text != "Open bag") {
+        this->dungeon->prev_command = v.opts[i - 1].text;
+      }
+      this->dungeon->bag_open = false;
+      if (v.opts[i - 1].func != nullptr) {
+        v.opts[i - 1].func();
+      }
     }
+    std::cout << this->dungeon->prev_command << "\n";
     std::cout << "\n";
 
     // Set dungeon based on current one so that we can move between them
-    if (this->dungeon->curr_room.compare(curr_room)) {
+    if (this->dungeon->curr_room != curr_room) {
       this->dungeon->prev_room = curr_room;
     }
     this->dungeon = this->dungeon->next_dungeon;
