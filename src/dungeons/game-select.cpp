@@ -1,23 +1,19 @@
 #include "dungeons/game-select.hpp"
 #include "dungeons/spire-of-bones.hpp"
 
-GameSelect::GameSelect() {
-  INIT_DUNGEON(GameSelect::welcome);
-  this->bag_enabled = false;
-}
+GameSelect::GameSelect() : Dungeon(AS_ROOM(GameSelect::welcome), false) {}
 
 View GameSelect::welcome() {
-  View v = NEW_VIEW();
+  View v = this->new_view();
   v.desc = "Hello, and welcome to the game! Created by Alex Lugo.";
-  ADD_OPT(v, "Select dungeon", SET_ROOM(GameSelect::dungeon_select));
+  ADD_OPT(v, "Select dungeon",
+          this->set_room(AS_ROOM(GameSelect::dungeon_select)));
   return v;
 }
 
 View GameSelect::dungeon_select() {
-  View v = NEW_VIEW();
+  View v = this->new_view();
   v.desc = "Please choose a dungeon";
-  ADD_OPT(v, "Spire of Bones", SET_DUNGEON(SpireOfBones));
+  ADD_OPT(v, "Spire of Bones", this->set_dungeon(new SpireOfBones()));
   return v;
 }
-
-View GameSelect::search_bag() { return NEW_VIEW(); }

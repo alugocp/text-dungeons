@@ -7,5 +7,4 @@ private:
 
 public:
   GameSelect();
-  View search_bag();
 };

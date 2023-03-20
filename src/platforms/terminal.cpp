@@ -15,7 +15,7 @@ public:
 void TerminalGame::start() {
   while (1) {
     // Run dungeon room function and call display on result
-    View v = this->dungeon->curr_room_func();
+    View v = this->dungeon->curr_room.func();
     if (this->dungeon->bag_enabled) {
       ADD_OPT(v, "Open bag", [this]() { this->dungeon->bag_open = true; });
       this->dungeon->held_item = NO_ITEM;
@@ -29,7 +29,7 @@ void TerminalGame::start() {
 
     // Wait for input
     int i;
-    std::string curr_room = this->dungeon->curr_room;
+    Room curr_room = this->dungeon->curr_room;
     std::cin >> i;
     if (i == 0) {
       break;
@@ -43,11 +43,12 @@ void TerminalGame::start() {
         v.opts[i - 1].func();
       }
     }
-    std::cout << this->dungeon->prev_command << "\n";
     std::cout << "\n";
 
     // Set dungeon based on current one so that we can move between them
-    if (this->dungeon->curr_room != curr_room) {
+    this->dungeon->entered_room =
+        this->dungeon->curr_room.name != curr_room.name;
+    if (this->dungeon->entered_room) {
       this->dungeon->prev_room = curr_room;
     }
     this->dungeon = this->dungeon->next_dungeon;

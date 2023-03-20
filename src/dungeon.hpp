@@ -4,35 +4,35 @@
 #include <functional>
 #include <string>
 #include <vector>
-#define Room std::function<View()>
-#define ADD_OPT(v, text, func) v.opts.push_back({func, text})
-#define AS_ROOM(func) std::bind(&func, this)
+#define Command std::function<void()>
+
+// Return a string value for the given function
 #define ROOM_NAME(func) #func
-#define NEW_VIEW()                                                             \
-  View { {}, "" }
-#define INIT_DUNGEON(func)                                                     \
-  this->curr_room_func = AS_ROOM(func);                                        \
-  this->curr_room = ROOM_NAME(func);                                           \
-  this->next_dungeon = this;
-#define SET_ROOM(func)                                                         \
-  [this]() {                                                                   \
-    this->curr_room_func = AS_ROOM(func);                                      \
-    this->curr_room = ROOM_NAME(func);                                         \
-  }
-#define SET_SAME_ROOM(func) [this]() { this->curr_room_func = AS_ROOM(func); }
-#define SET_DUNGEON(d) [this]() { this->next_dungeon = new d(); }
-#define EXIT_DUNGEON() [this]() { this->next_dungeon = NULL; }
-#define HOLD_ITEM(item) [this]() { this->held_item = item; }
+
+// Converts a function to a Room type
+#define AS_ROOM(func)                                                          \
+  Room { std::bind(&func, this), ROOM_NAME(func) }
+
+// Converts a function to a Room type with the same room name
+#define SAME_ROOM(func)                                                        \
+  Room { std::bind(&func, this), this->curr_room.name }
+
+// Adds an option to the view
+#define ADD_OPT(v, text, func) v.opts.push_back({text, func})
+
+// Adds an option for the search bag view
 #define ITEM_OPT(v, name, flag, value)                                         \
   if (flag) {                                                                  \
-    ADD_OPT(v, name, HOLD_ITEM(value));                                        \
+    ADD_OPT(v, name, [this]() { this->held_item = value; });                   \
   }
+
+// Value representing no item in the player's hand
 #define NO_ITEM -1
 
 // Option type used for player choice
 struct Option {
-  std::function<void()> func;
   std::string text;
+  Command func;
 };
 
 // View type used to present player with information
@@ -41,16 +41,30 @@ struct View {
   std::string desc;
 };
 
+// Room type for logic encapsulation
+struct Room {
+  std::function<View()> func;
+  std::string name;
+};
+
 // Dungeon class to be overridden by content definition
 class Dungeon {
+protected:
+  View new_view();
+  Command set_room(Room room);
+  Command set_dungeon(Dungeon *d);
+  Command exit_dungeon();
+  Dungeon(Room initial, bool bag_enabled = true);
+
 public:
-  std::string curr_room, prev_room = "", prev_command = "";
-  Room curr_room_func;
+  Room curr_room, prev_room = {nullptr, ""};
+  std::string prev_command = "";
   Dungeon *next_dungeon;
+  bool entered_room = true;
   bool bag_open = false;
   bool bag_enabled = true;
   int held_item = NO_ITEM;
-  virtual View search_bag() = 0;
+  virtual View search_bag();
   virtual ~Dungeon() = default;
 };
 
