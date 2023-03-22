@@ -28,16 +28,16 @@ void TerminalGame::start() {
     this->display(v);
 
     // Wait for input
-    int i;
+    int i = -1;
     Room curr_room = this->dungeon->curr_room;
-    std::cin >> i;
+    while (i < 0 || i > v.opts.size()) {
+      std::cin >> i;
+    }
     if (i == 0) {
       break;
     }
     if (i <= v.opts.size()) {
-      if (!this->dungeon->bag_open && v.opts[i - 1].text != "Open bag") {
-        this->dungeon->prev_command = v.opts[i - 1].text;
-      }
+      this->dungeon->prev_command = v.opts[i - 1].text;
       this->dungeon->bag_open = false;
       if (v.opts[i - 1].func != nullptr) {
         v.opts[i - 1].func();
