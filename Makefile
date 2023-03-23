@@ -16,3 +16,9 @@ link:
 
 format:
 	clang-format -i $(SRC_WITH_HEADERS)
+
+lint:
+	python3 -m pylint ./**/*.py
+
+test: all
+	python3 tests/test.py

@@ -1,0 +1,695 @@
+Hello, and welcome to the game! Created by Alex Lugo.
+1: Select dungeon
+
+Please choose a dungeon
+1: Spire of Bones
+
+You stride into the lobby of the Spire of Bones. It is a vertically oriented room with a clay pot on the left wall and a high ledge along the far end. The ledge appears to grant entry to the rest of the dungeon. A lone stalagmite juts up from the ledge and stretches toward the high ceiling.
+1: Check the pot
+2: Open your bag
+
+You open your bag.
+1: Close the bag
+
+You stand in the dungeon's lobby with the high ledge and stalagmite looming over you.
+1: Check the pot
+2: Open your bag
+
+You thrust a hand into the clay pot and retrieve from it a thick length of rope. You place this item in your bag.
+1: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Close the bag
+
+You stand in the dungeon's lobby with the high ledge and stalagmite looming over you.
+1: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Close the bag
+
+You stand in the dungeon's lobby with the high ledge and stalagmite looming over you.
+1: Climb the ledge with the rope
+2: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Close the bag
+
+You stand in the dungeon's lobby with the high ledge and stalagmite looming over you.
+1: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Close the bag
+
+You stand in the dungeon's lobby with the high ledge and stalagmite looming over you.
+1: Climb the ledge with the rope
+2: Open your bag
+
+You swing your rope about the stalagmite on the ledge above you. It allows you to climb up the wall step by step, until you can lift yourself over the edge. You stand up in a short hallway with two doorways. One is barred by an iron door and the other opens upon a spiral stone staircase.
+1: Try the door
+2: Enter the spiral staircase
+3: Jump back down to the lobby
+4: Open your bag
+
+You attempt to push the great iron door but it doesn't budge.
+1: Try the door
+2: Enter the spiral staircase
+3: Jump back down to the lobby
+4: Open your bag
+
+You leap past the stalagmite on the ledge and down into the the dungeon's entrance. You roll as you hit the cold floor so as not to break your legs.
+1: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Close the bag
+
+You stand in the dungeon's lobby with the high ledge and stalagmite looming over you.
+1: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Close the bag
+
+You stand in the dungeon's lobby with the high ledge and stalagmite looming over you.
+1: Climb the ledge with the rope
+2: Open your bag
+
+You swing your rope about the stalagmite on the ledge above you. It allows you to climb up the wall step by step, until you can lift yourself over the edge. You stand up in a short hallway with two doorways. One is barred by an iron door and the other opens upon a spiral stone staircase.
+1: Try the door
+2: Enter the spiral staircase
+3: Jump back down to the lobby
+4: Open your bag
+
+You attempt to push the great iron door but it doesn't budge.
+1: Try the door
+2: Enter the spiral staircase
+3: Jump back down to the lobby
+4: Open your bag
+
+You pass through the open doorway into the spiral staircase.
+1: Go back out
+2: Go upwards
+3: Go downwards
+4: Open your bag
+
+You step down the spiral stairway until you get to the bottom. There is a lever next to you on the wall. The last few steps of the staircase have caved into a large pit below. This pit is filled with murky water.
+1: Go up the staircase
+2: Jump down
+3: Pull the lever
+4: Open your bag
+
+You ascend up the spiral staircase until you get to an open doorway. This doorway opens to a short hall with a stalagmite at its far end.
+1: Go out the doorway
+2: Go upwards
+3: Go back down
+4: Open your bag
+
+You step out of the spiral staircase and enter the short hallway with the stalagmite perched above the lobby.
+1: Try the door
+2: Go back to the spiral staircase
+3: Jump down to the lobby
+4: Open your bag
+
+You attempt to push the great iron door but it doesn't budge.
+1: Try the door
+2: Go back to the spiral staircase
+3: Jump down to the lobby
+4: Open your bag
+
+You pass through the open doorway into the spiral staircase.
+1: Go back out
+2: Go upwards
+3: Go downwards
+4: Open your bag
+
+You emerge through a doorway at the top of the spiral staircase, coming upon a long hallway. There are two open doorways along the left wall with a lever in between them. The far end of the hall opens into a service shaft.
+1: Go to the spiral staircase
+2: Go through the first door
+3: Pull the lever
+4: Go through the second door
+5: Examine the far end of the hallway
+6: Open your bag
+
+You stride to the service shaft at the far end of the hallway, kicking away several pebbles from your path. The bottom of this shaft is obscured in darkness. An iron bar runs the width of the shaft along the ceiling. You can just barely make out a wooden bow wedged partway down the shaft.
+1: Go back through the hallway
+2: Throw a pebble down the shaft
+3: Open your bag
+
+You step back from the service shaft and stroll towards the middle of the hallway.
+1: Go to the spiral staircase
+2: Go through the first door
+3: Pull the lever
+4: Go through the second door
+5: Examine the far end of the hallway
+6: Open your bag
+
+You stride to the service shaft at the far end of the hallway, kicking away several pebbles from your path. The bottom of this shaft is obscured in darkness. An iron bar runs the width of the shaft along the ceiling. You can just barely make out a wooden bow wedged partway down the shaft.
+1: Go back through the hallway
+2: Throw a pebble down the shaft
+3: Open your bag
+
+You throw a pebble down the shaft. You hear it fall half a hundred feet before splashing in water.
+1: Go back through the hallway
+2: Throw a pebble down the shaft
+3: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Close the bag
+
+You at the mouth of the service shaft.
+1: Go back through the hallway
+2: Throw a pebble down the shaft
+3: Open your bag
+
+You step back from the service shaft and stroll towards the middle of the hallway.
+1: Go to the spiral staircase
+2: Go through the first door
+3: Pull the lever
+4: Go through the second door
+5: Examine the far end of the hallway
+6: Open your bag
+
+You hear the sound of water draining as you flip the lever. It seems to be coming from the far side of the hallway.
+1: Go to the spiral staircase
+2: Go through the first door
+3: Pull the lever
+4: Go through the second door
+5: Examine the far end of the hallway
+6: Open your bag
+
+You stride to the service shaft at the far end of the hallway, kicking away several pebbles from your path. The bottom of this shaft is obscured in darkness. An iron bar runs the width of the shaft along the ceiling. You can just barely make out a wooden bow wedged partway down the shaft.
+1: Go back through the hallway
+2: Throw a pebble down the shaft
+3: Open your bag
+
+You throw a pebble down the shaft. You hear it fall a hundred feet before splashing in water.
+1: Go back through the hallway
+2: Throw a pebble down the shaft
+3: Open your bag
+
+You throw a pebble down the shaft. You hear it fall a hundred feet before splashing in water.
+1: Go back through the hallway
+2: Throw a pebble down the shaft
+3: Open your bag
+
+You step back from the service shaft and stroll towards the middle of the hallway.
+1: Go to the spiral staircase
+2: Go through the first door
+3: Pull the lever
+4: Go through the second door
+5: Examine the far end of the hallway
+6: Open your bag
+
+You flip the lever again but nothing happens.
+1: Go to the spiral staircase
+2: Go through the first door
+3: Pull the lever
+4: Go through the second door
+5: Examine the far end of the hallway
+6: Open your bag
+
+You stride to the service shaft at the far end of the hallway, kicking away several pebbles from your path. The bottom of this shaft is obscured in darkness. An iron bar runs the width of the shaft along the ceiling. You can just barely make out a wooden bow wedged partway down the shaft.
+1: Go back through the hallway
+2: Throw a pebble down the shaft
+3: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Close the bag
+
+You at the mouth of the service shaft.
+1: Go back through the hallway
+2: Throw a pebble down the shaft
+3: Climb down the shaft
+4: Open your bag
+
+You tie your rope to the iron bar along the top of the shaft and propel down to the level of the bow. You stretch one hand to place the bow in your bag before climbing back up to the mouth of the shaft.
+1: Go back through the hallway
+2: Throw a pebble down the shaft
+3: Open your bag
+
+You throw a pebble down the shaft. You hear it fall a hundred feet before splashing in water.
+1: Go back through the hallway
+2: Throw a pebble down the shaft
+3: Open your bag
+
+You step back from the service shaft and stroll towards the middle of the hallway.
+1: Go to the spiral staircase
+2: Go through the first door
+3: Pull the lever
+4: Go through the second door
+5: Examine the far end of the hallway
+6: Open your bag
+
+You enter a room where a cursed skeleton stands before you. It charges at you with a dagger.
+1: Run away
+2: Dodge out of the way
+3: Strike back with your fist
+4: Open your bag
+
+You turn and quickly flee the room. The skeleton follows up to a point, stopping short of the hallway. It is as if the ghoul is bound within the room itself.
+1: Go to the spiral staircase
+2: Go through the first door
+3: Pull the lever
+4: Go through the second door
+5: Examine the far end of the hallway
+6: Open your bag
+
+You enter a room where a cursed skeleton stands before you. It charges at you with a dagger.
+1: Run away
+2: Dodge out of the way
+3: Strike back with your fist
+4: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Grab the bow
+3: Close the bag
+
+The skeleton prepares to charge at you.
+1: Run away
+2: Dodge out of the way
+3: Strike back with your fist
+4: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Grab the bow
+3: Close the bag
+
+The skeleton prepares to charge at you.
+1: Run away
+2: Dodge out of the way
+3: Strike back with your fist
+4: Swing with your bow
+5: Open your bag
+
+You swing your bow at the skeleton, shattering the foe into a flurry of dusty bones. You pick up 3 arrows from the skeleton's remains.
+1: Back to the hallway
+2: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Grab the bow
+3: Close the bag
+
+You stand about in the room amongst a pile of dry bones.
+1: Back to the hallway
+2: Open your bag
+
+You exit the skeleton's tomb and return to the long hallway.
+1: Go to the spiral staircase
+2: Go through the first door
+3: Pull the lever
+4: Go through the second door
+5: Examine the far end of the hallway
+6: Open your bag
+
+You make your way back to the spiral staircase and continue downwards until you get to an open doorway. The portal opens to a hallway with a stalagmite at the far end.
+1: Go out the doorway
+2: Go back up
+3: Go downwards
+4: Open your bag
+
+You step down the spiral stairway until you get to the bottom. There is a lever next to you on the wall. The last few steps of the staircase have caved into a large pit below. You can just barely make out the shape of some great beast lurking about the waters of the pit.
+1: Go up the staircase
+2: Jump down
+3: Pull the lever
+4: Open your bag
+
+You pull the lever. The water in the pit below you slowly drains. The receeding waters reveal a giant reptilian beast as they fully evacuate the room.
+1: Go up the staircase
+2: Jump down
+3: Pull the lever
+4: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Grab the bow
+3: Close the bag
+
+You stand on the bottom few steps of the spiral staircase. The ground floor has long since given way to a deep pit. An enormous crocodilian hisses at you from the bottom of the pit.
+1: Go up the staircase
+2: Jump down
+3: Pull the lever
+4: Fire an arrow
+5: Open your bag
+
+You fire an arrow at the hissing beast. It writhes in pain until its eyes turn to glass.
+1: Go up the staircase
+2: Jump down
+3: Pull the lever
+4: Open your bag
+
+You open your bag.
+1: Grab the rope
+2: Grab the bow
+3: Close the bag
+
+You stand on the bottom few steps of the spiral staircase. The ground floor has long since given way to a deep pit.
+1: Go up the staircase
+2: Jump down
+3: Pull the lever
+4: Tie rope to the lever
+5: Open your bag
+
+You tie one end of your rope to the lever. The other end dangles into the pit.
+1: Go up the staircase
+2: Climb down
+3: Pull the lever
+4: Open your bag
+
+You climb down the rope into the drained pit below.
+1: Go through the next door
+2: Climb up the rope
+3: Open your bag
+
+You enter a small damp room with an open shaft in the ceiling. The shaft extends up beyond your field of vision and drips water into the center of the room. A gargoyle in the shape of a raven sits on the far side of the room, dripping wet and playing with a fluorescent ruby in its stony beak. There are 3 pebbles strewn about the ground among small dying fishes.
+1: Go through next door
+2: Go back
+3: Talk to the bird
+4: Open your bag
+
+You leave the room with the stone raven and return to the drained pit. A giant reptilian corpse leans along one of the pit's walls. Your rope still hangs from the lever on the wall above the pit.
+1: Go back
+2: Climb up the rope
+3: Open your bag
+
+You enter a small damp room with an open shaft in the ceiling. The shaft extends up beyond your field of vision and drips water into the center of the room. A gargoyle in the shape of a raven sits on the far side of the room, dripping wet and playing with a fluorescent ruby in its stony beak. There are 3 pebbles strewn about the ground among small dying fishes.
+1: Go through next door
+2: Go back
+3: Talk to the bird
+4: Open your bag
+
+You approach the raven. It tilts its head to look at you with a single stony eye as droplets fly from its beak. It mutters a single word, "round," before returning its attention to the glowing ruby at its feet.
+1: Go through next door
+2: Go back
+3: Pick up the pebbles
+4: Open your bag
+
+You pick up the pebbles strewn about the puddled floor. The bird perks its head up from the ruby almost instantly, its unblinking eyes trained on the small rocks in your hand.
+1: Go through next door
+2: Go back
+3: Trade the pebbles
+4: Open your bag
+
+You move towards the raven as it eyes your hand with anticipation. It gingerly pecks the pebbles out of your hand before nudging its old plaything towards you. You place the soaked glowing ruby in your bag.
+1: Go through next door
+2: Go back
+3: Open your bag
+
+You leave the raven and walk up a set of stairs to enter the next room. As you near the top you realize you are spotted by a pair of fierce skeletal warriors. This will be no trivial encounter. One of the warriors charges towards you, sword in hand. The other stalks along the far wall with its bow drawn taut.
+1: Dodge
+2: Open your bag
+
+You open your bag.
+1: Grab the bow
+2: Grab the fluorescent ruby
+3: Close the bag
+
+You are crouched inside the arena, ready to check any oncoming attack from dry bony foes. One of the warriors charges towards you, sword in hand. The other stalks along the far wall with its bow drawn taut.
+1: Dodge
+2: Open your bag
+
+You open your bag.
+1: Grab the bow
+2: Grab the fluorescent ruby
+3: Close the bag
+
+You are crouched inside the arena, ready to check any oncoming attack from dry bony foes. One of the warriors charges towards you, sword in hand. The other stalks along the far wall with its bow drawn taut.
+1: Dodge
+2: Fire an arrow
+3: Open your bag
+
+You fire an arrow at the charging skeleton. Your shot strikes the ghoul's knee joint, causing it to fall and shatter on the floor.
+1: Dodge
+2: Fire an arrow
+3: Open your bag
+
+You let loose an arrow at the second skeleton. The projectile pierces its brittle skull, sending forth a burst of bony shards and dust.
+1: Go to next room
+2: Go back
+3: Open your bag
+
+You enter a dark hallway. There are maze-like walls with arches that allow easy passage. Heaps of refuse litter the floor, lending a foul stench to the air. There is a small goblin sitting about, pondering over you from behind a rotted corpse.
+1: Go back
+2: Talk to the goblin
+3: Open your bag
+
+You retreat from the dark stinking hall into the arena where skeletal warriors once stood guard.
+1: Go to next room
+2: Go back
+3: Open your bag
+
+You enter the damp room that the stone raven calls home. The avian construct pecks and wonders at its precious pebbles.
+1: Go through next door
+2: Go back
+3: Open your bag
+
+You leave the room with the stone raven and return to the drained pit. A giant reptilian corpse leans along one of the pit's walls. Your rope still hangs from the lever on the wall above the pit.
+1: Go back
+2: Climb up the rope
+3: Open your bag
+
+You climb up from the pit to the bottom of the spiral staircase.
+1: Go up the staircase
+2: Climb down
+3: Pull the lever
+4: Open your bag
+
+You ascend up the spiral staircase until you get to an open doorway. This doorway opens to a short hall with a stalagmite at its far end.
+1: Go out the doorway
+2: Go upwards
+3: Go back down
+4: Open your bag
+
+You emerge through a doorway at the top of the spiral staircase, coming upon a long hallway. There are two open doorways along the left wall with a lever in between them. The far end of the hall opens into a service shaft.
+1: Go to the spiral staircase
+2: Go through the first door
+3: Pull the lever
+4: Go through the second door
+5: Examine the far end of the hallway
+6: Open your bag
+
+You pass through the doorway and come upon another hallway. The floor is maze-like, with a hundred foot drop filling the space in between paths. A single mis-step could mean certain doom.
+1: Go forward
+2: Go back
+3: Open your bag
+
+You open your bag.
+1: Grab the bow
+2: Grab the fluorescent ruby
+3: Close the bag
+
+You stand in the dark hall with the maze-like floor. The air that rises from below carries a foul odor. Your ruby illuminates the hallway, allowing you to check your footing.
+1: Go forward
+2: Go back
+3: Open your bag
+
+The ruby lights your way as you traverse the hallway without falter.
+1: Continue
+2: Open your bag
+
+You successfully navigate the maze-like foor of the hallway until you enter a small room at the far end. There is a mighty ornate axe mounted on the far wall.
+1: Take the axe
+2: Go back to the hallway
+3: Open your bag
+
+You open your bag.
+1: Grab the bow
+2: Grab the fluorescent ruby
+3: Close the bag
+
+You stand about in the small room. There is a mighty ornate axe mounted on the far wall.
+1: Take the axe
+2: Go back to the hallway
+3: Open your bag
+
+You release the ancient axe from its wall mounts and place it in your bag.
+1: Go back to the hallway
+2: Open your bag
+
+You open your bag.
+1: Grab the bow
+2: Grab the mythical axe
+3: Grab the fluorescent ruby
+4: Close the bag
+
+You stand about in the small room. It is empty. Bare mounts on the far wall once contained a mythical axe that now sits in your bag.
+1: Go back to the hallway
+2: Open your bag
+
+You leave the room that once held the ornate axe to enter the reeking hallway with the maze-like floor.
+1: Go forward
+2: Go back
+3: Open your bag
+
+You open your bag.
+1: Grab the bow
+2: Grab the mythical axe
+3: Grab the fluorescent ruby
+4: Close the bag
+
+You stand in the dark hall with the maze-like floor. The air that rises from below carries a foul odor. Your ruby illuminates the hallway, allowing you to check your footing.
+1: Go forward
+2: Go back
+3: Open your bag
+
+The ruby lights your way as you traverse the hallway without falter.
+1: Continue
+2: Open your bag
+
+You safely traverse the ruby-lit hall with the mazelike floor to emerge in the much less perilous hallway.
+1: Go to the spiral staircase
+2: Go through the first door
+3: Pull the lever
+4: Go through the second door
+5: Examine the far end of the hallway
+6: Open your bag
+
+You make your way back to the spiral staircase and continue downwards until you get to an open doorway. The portal opens to a hallway with a stalagmite at the far end.
+1: Go out the doorway
+2: Go back up
+3: Go downwards
+4: Open your bag
+
+You step down the spiral stairway until you get to the bottom. There is a lever next to you on the wall. The last few steps of the staircase have caved into a large pit below.
+1: Go up the staircase
+2: Climb down
+3: Pull the lever
+4: Open your bag
+
+You climb down the rope into the drained pit below.
+1: Go through the next door
+2: Climb up the rope
+3: Open your bag
+
+You enter the damp room that the stone raven calls home. The avian construct pecks and wonders at its precious pebbles.
+1: Go through next door
+2: Go back
+3: Open your bag
+
+You progress up a set of stairs into the arena where skeletal warriors once stood guard.
+1: Go to next room
+2: Go back
+3: Open your bag
+
+You enter a dark hallway. There are maze-like walls with arches that allow easy passage. Heaps of refuse litter the floor, lending a foul stench to the air. There is a small goblin sitting about, pondering over you from behind a rotted corpse.
+1: Go back
+2: Talk to the goblin
+3: Open your bag
+
+You approach the goblin, and see that it is carrying a golden key. The key's brilliance is somewhat muddled by the same filth that litters the room. The goblin speaks, "This shiny is old. I will give it to you for a new shiny!"
+1: Go back
+2: Open your bag
+
+You open your bag.
+1: Grab the bow
+2: Grab the mythical axe
+3: Grab the fluorescent ruby
+4: Close the bag
+
+You stand about in the putrid hallway. The goblin puzzles over you while keeping its distance and not daring to speak.
+1: Go back
+2: Talk to the goblin
+3: Open your bag
+
+The goblin notices your luminescent ruby. It offers to trade you its dulled key for it.
+1: Go back
+2: Give the glowing ruby
+3: Open your bag
+
+You extend your hand to complete the trade. The goblin is overjoyed, and drops the key in its excitement. You swiftly pick it up and wipe it on your pant leg before stashing it in your bag.
+1: Go back
+2: Open your bag
+
+You open your bag.
+1: Grab the golden key
+2: Grab the bow
+3: Grab the mythical axe
+4: Close the bag
+
+You stand about in the putrid hallway. The goblin hardly acknowledges your extended presence as it is entranced with its glowing gem.
+1: Go back
+2: Open your bag
+
+You retreat from the dark stinking hall into the arena where skeletal warriors once stood guard.
+1: Go to next room
+2: Go back
+3: Open your bag
+
+You enter the damp room that the stone raven calls home. The avian construct pecks and wonders at its precious pebbles.
+1: Go through next door
+2: Go back
+3: Open your bag
+
+You leave the room with the stone raven and return to the drained pit. A giant reptilian corpse leans along one of the pit's walls. Your rope still hangs from the lever on the wall above the pit.
+1: Go back
+2: Climb up the rope
+3: Open your bag
+
+You climb up from the pit to the bottom of the spiral staircase.
+1: Go up the staircase
+2: Climb down
+3: Pull the lever
+4: Open your bag
+
+You ascend up the spiral staircase until you get to an open doorway. This doorway opens to a short hall with a stalagmite at its far end.
+1: Go out the doorway
+2: Go upwards
+3: Go back down
+4: Open your bag
+
+You step out of the spiral staircase and enter the short hallway with the stalagmite perched above the lobby.
+1: Try the door
+2: Go back to the spiral staircase
+3: Jump down to the lobby
+4: Open your bag
+
+You attempt to push the great iron door but it doesn't budge.
+1: Try the door
+2: Go back to the spiral staircase
+3: Jump down to the lobby
+4: Open your bag
+
+You open your bag.
+1: Grab the golden key
+2: Grab the bow
+3: Grab the mythical axe
+4: Close the bag
+
+You stand in the hallway near the dungeon entrance.
+1: Try the door
+2: Go back to the spiral staircase
+3: Jump down to the lobby
+4: Open your bag
+
+You try the golden key in a slit on the iron door. It gives way with a small push.
+1: Pass through the open doorway
+2: Open your bag
+
+You start past the iron door and enter a large room with a terrible inhabitant. An enormous bony serpent stirs in the middle of the room, its ivory coils wrapped around a great golden hoard. The beast emits a hissing roar and prepares to strike.
+1: Run
+2: Open your bag
+
+You open your bag.
+1: Grab the golden key
+2: Grab the bow
+3: Grab the mythical axe
+4: Close the bag
+
+You anticipate a strike from the great skeletal serpent before you.
+1: Run
+2: Swing your axe
+3: Open your bag
+
+You swing the great axe at the serpent's skull, shattering the beast into a thousand bony pieces that crash about glittering gold coins. You have conquered of the Spire of Bones!
+1: Okay
+
+Hello, and welcome to the game! Created by Alex Lugo.
+1: Select dungeon

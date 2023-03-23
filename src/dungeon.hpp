@@ -10,21 +10,21 @@
 #define ROOM_NAME(func) #func
 
 // Converts a function to a Room type
-#define AS_ROOM(func)                                                          \
+#define AS_ROOM(func)                                                                              \
   Room { std::bind(&func, this), ROOM_NAME(func) }
 
 // Adds an option to the view
 #define ADD_OPT(v, text, func) v.opts.push_back({text, func})
 
 // Adds an option for the search bag view
-#define ITEM_OPT(v, name, flag, value)                                         \
-  if (flag) {                                                                  \
-    ADD_OPT(v, name, [this]() { this->held_item = value; });                   \
+#define ITEM_OPT(v, name, flag, value)                                                             \
+  if (flag) {                                                                                      \
+    ADD_OPT(v, name, [this]() { this->held_item = value; });                                       \
   }
 
 // Defines the command where the user must leave a dungeon
-#define DONE(v)                                                                \
-  ADD_OPT(v, "Okay", this->exit_dungeon());                                    \
+#define DONE(v)                                                                                    \
+  ADD_OPT(v, "Okay", this->exit_dungeon());                                                        \
   this->bag_enabled = false;
 
 // Value representing no item in the player's hand

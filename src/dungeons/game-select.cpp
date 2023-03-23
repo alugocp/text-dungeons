@@ -6,8 +6,7 @@ GameSelect::GameSelect() : Dungeon(AS_ROOM(GameSelect::welcome), false) {}
 View GameSelect::welcome() {
   View v = this->new_view();
   v.desc = "Hello, and welcome to the game! Created by Alex Lugo.";
-  ADD_OPT(v, "Select dungeon",
-          this->set_room(AS_ROOM(GameSelect::dungeon_select)));
+  ADD_OPT(v, "Select dungeon", this->set_room(AS_ROOM(GameSelect::dungeon_select)));
   return v;
 }
 

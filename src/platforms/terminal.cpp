@@ -22,8 +22,7 @@ void TerminalGame::start() {
     if (this->dungeon->bag_open) {
       v = this->dungeon->search_bag();
       v.desc = "You open your bag.";
-      ADD_OPT(v, "Close the bag",
-              [this]() { this->dungeon->held_item = NO_ITEM; });
+      ADD_OPT(v, "Close the bag", [this]() { this->dungeon->held_item = NO_ITEM; });
     }
     this->display(v);
 
@@ -46,8 +45,7 @@ void TerminalGame::start() {
     std::cout << "\n";
 
     // Set dungeon based on current one so that we can move between them
-    this->dungeon->entered_room =
-        this->dungeon->curr_room.name != curr_room.name;
+    this->dungeon->entered_room = this->dungeon->curr_room.name != curr_room.name;
     if (this->dungeon->entered_room) {
       this->dungeon->prev_room = curr_room;
       this->dungeon->held_item = NO_ITEM;
