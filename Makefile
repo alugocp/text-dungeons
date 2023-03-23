@@ -22,3 +22,6 @@ lint:
 
 test: all
 	python3 tests/test.py
+
+gen:
+	python3 procgen/dungeon.py

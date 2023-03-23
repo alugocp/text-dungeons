@@ -14,4 +14,13 @@ make
 
 # Formats the code
 make format
+
+# Runs game tests
+make test
+
+# Lints adjacent Python code
+make lint
+
+# Runs the procedural dungeon layout generator
+make gen
 ```
