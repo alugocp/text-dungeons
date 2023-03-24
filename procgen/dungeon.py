@@ -53,11 +53,13 @@ def has_path(edges: Edges, src: str, dst: str) -> bool:
     Returns True if the network contains a path from src to dst.
     """
     explore = [src]
+    traversed = []
     while len(explore) > 0:
         if dst in explore:
             return True
         node = explore.pop(0)
-        explore += edges[node]
+        traversed.append(node)
+        explore += list(filter(lambda x: x not in explore and x not in traversed, edges[node]))
     return False
 
 def get_parent(edges: Edges, child: str) -> str:
@@ -76,7 +78,7 @@ def generate_layout() -> Tuple[Edges, str]:
     print('Generating dungeon layout...')
     boss_room = None
     layout = {'Room 1': []}
-    num_rooms = int(os.environ['PROCGEN_ROOMS']) if os.environ['PROCGEN_ROOMS'] else ROOMS
+    num_rooms = int(os.environ['PROCGEN_ROOMS']) if 'PROCGEN_ROOMS' in os.environ else ROOMS
     while len(layout.keys()) < num_rooms:
         parent = random.choice(list(filter(lambda k: len(layout[k]) < MAX_DOORS, layout.keys())))
         new_room = f'Room {len(layout.keys()) + 1}'
