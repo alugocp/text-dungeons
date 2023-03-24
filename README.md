@@ -22,5 +22,11 @@ make test
 make lint
 
 # Runs the procedural dungeon layout generator
-make gen
+make dungeon
+
+# Runs the procedural dungeon layout generator with n rooms
+export PROCGEN_ROOMS=n && make dungeon
+
+# Regenerates traversal on the current procedural dungeon layout
+make traversal
 ```

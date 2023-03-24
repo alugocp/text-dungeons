@@ -23,5 +23,8 @@ lint:
 test: all
 	python3 tests/test.py
 
-gen:
+dungeon:
 	python3 procgen/dungeon.py
+
+traversal:
+	python3 procgen/dungeon.py traversal
