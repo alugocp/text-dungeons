@@ -24,6 +24,7 @@
 
 // Defines the command where the user must leave a dungeon
 #define DONE(v)                                                                                    \
+  v.opts.clear();                                                                                  \
   ADD_OPT(v, "Okay", this->exit_dungeon());                                                        \
   this->bag_enabled = false;
 

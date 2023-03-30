@@ -3,6 +3,7 @@ Hello, and welcome to the game! Created by Alex Lugo.
 
 Please choose a dungeon
 1: Spire of Bones
+2: The Wild Hall
 
 You stride into the lobby of the Spire of Bones. It is a vertically oriented room with a clay pot on the left wall and a high ledge along the far end. The ledge appears to grant entry to the rest of the dungeon. A lone stalagmite juts up from the ledge and stretches toward the high ceiling.
 1: Check the pot

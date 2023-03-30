@@ -1,5 +1,6 @@
 #include "dungeons/game-select.hpp"
 #include "dungeons/spire-of-bones.hpp"
+#include "dungeons/the-wild-hall.hpp"
 
 GameSelect::GameSelect() : Dungeon(AS_ROOM(GameSelect::welcome), false) {}
 
@@ -14,5 +15,6 @@ View GameSelect::dungeon_select() {
   View v = this->new_view();
   v.desc = "Please choose a dungeon";
   ADD_OPT(v, "Spire of Bones", this->set_dungeon(new SpireOfBones()));
+  ADD_OPT(v, "The Wild Hall", this->set_dungeon(new TheWildHall()));
   return v;
 }
