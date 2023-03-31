@@ -6,6 +6,7 @@ private:
   bool item_mini_boss_head_2 = false;
   bool item_sword = false;
   bool item_key = false;
+  bool item_sand = false;
   bool mini_boss_1_killed = false;
   bool mini_boss_2_killed = false;
   bool sword_enchanted = false;
@@ -14,6 +15,9 @@ private:
   int heads_placed_on_dais = 0;
   int puzzle_pieces_placed = 0;
   int puzzle_pieces[4];
+  int raptor_boss_action = 0;
+  int panther_boss_state = 0;
+  int panther_boss_side = 0;
   View lobby();
   View mini_boss_1();
   View altar_room();

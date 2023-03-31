@@ -31,6 +31,9 @@
 // Value representing no item in the player's hand
 #define NO_ITEM -1
 
+// Random number generator seed value
+#define RNG_SEED 1680207990
+
 // Option type used for player choice
 struct Option {
   std::string text;
@@ -57,6 +60,7 @@ protected:
   Command set_dungeon(Dungeon *d);
   Command exit_dungeon();
   Dungeon(Room initial, bool bag_enabled = true);
+  int roll_dice(int max);
 
 public:
   Room curr_room, prev_room = {nullptr, ""};

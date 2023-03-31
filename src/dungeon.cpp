@@ -1,10 +1,13 @@
 #include "dungeon.hpp"
+#include <stdlib.h>
 
 Dungeon::Dungeon(Room initial, bool bag_enabled) {
   this->bag_enabled = bag_enabled;
   this->curr_room = initial;
   this->next_dungeon = this;
 }
+
+int Dungeon::roll_dice(int max) { return rand() % max; }
 
 // Returns an empty view
 View Dungeon::new_view() { return {{}, ""}; }

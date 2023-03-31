@@ -1,5 +1,6 @@
 #include "dungeons/game-select.hpp"
 #include <iostream>
+#include <stdlib.h>
 
 class TerminalGame : public Game {
 private:
@@ -13,6 +14,7 @@ public:
 };
 
 void TerminalGame::start() {
+  srand(RNG_SEED);
   while (1) {
     // Run dungeon room function and call display on result
     View v = this->dungeon->curr_room.func();

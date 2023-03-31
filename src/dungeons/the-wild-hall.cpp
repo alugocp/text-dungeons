@@ -3,6 +3,19 @@
 #define ITEM_MINI_BOSS_HEAD_2 1
 #define ITEM_KEY 2
 #define ITEM_SWORD 3
+#define ITEM_SAND 4
+#define PUZZLE_PIECE_RAPTOR 0
+#define PUZZLE_PIECE_OTHER 1
+#define PUZZLE_PIECE_LION 2
+#define PUZZLE_PIECE_GORILLA 3
+#define RAPTOR_BOSS_HISS 0
+#define RAPTOR_BOSS_STALK 1
+#define RAPTOR_BOSS_CHARGE 2
+#define RAPTOR_BOSS_STUNNED 3
+#define PANTHER_BOSS_RIGHT 0
+#define PANTHER_BOSS_LEFT 1
+#define PANTHER_BOSS_POUNCING 0
+#define PANTHER_BOSS_RECOVERING 1
 
 TheWildHall::TheWildHall() : Dungeon(AS_ROOM(TheWildHall::lobby)) {}
 
@@ -12,6 +25,7 @@ View TheWildHall::search_bag() {
   ITEM_OPT(v, "Grab the second boss totem", this->item_mini_boss_head_2, ITEM_MINI_BOSS_HEAD_2);
   ITEM_OPT(v, "Grab the key", this->item_key, ITEM_KEY);
   ITEM_OPT(v, "Grab the sword", this->item_sword, ITEM_SWORD);
+  ITEM_OPT(v, "Grab the sand", this->item_sand, ITEM_SAND);
   return v;
 }
 
@@ -55,29 +69,74 @@ View TheWildHall::lobby() {
 
 View TheWildHall::mini_boss_1() {
   View v = this->new_view();
-  // TODO write mini-boss
-  v.desc = "You stand within the first mini boss room";
-  if (this->entered_room) {
-    v.desc = "You enter the first mini boss room";
-  }
   if (this->mini_boss_1_killed) {
     v.desc = "You stand within the dead first mini boss room";
     if (this->entered_room) {
       v.desc = "You enter the dead first mini boss room";
     }
+  } else if (this->entered_room) {
+    v.desc = "You enter the first mini boss room. A panther stares at you.";
+    ADD_OPT(v, "Continue", nullptr);
+    return v;
   }
-  if (this->prev_command == "Hit mini boss") {
-    v.desc = "You killed the mini boss";
-    this->item_mini_boss_head_1 = true;
-    this->mini_boss_1_killed = true;
+  if (this->prev_command == "Dodge to the left") {
+    if (this->panther_boss_state == PANTHER_BOSS_POUNCING &&
+        this->panther_boss_side == PANTHER_BOSS_RIGHT) {
+      v.desc = "You dodge out of the panther's way.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    } else {
+      v.desc = "You leap but the panther comes upon you.";
+      DONE(v);
+      return v;
+    }
+  }
+  if (this->prev_command == "Dodge to the right") {
+    if (this->panther_boss_state == PANTHER_BOSS_POUNCING &&
+        this->panther_boss_side == PANTHER_BOSS_LEFT) {
+      v.desc = "You dodge out of the panther's way.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    } else {
+      v.desc = "You leap but the panther comes upon you.";
+      DONE(v);
+      return v;
+    }
+  }
+  if (this->prev_command == "Swing sword") {
+    if (this->panther_boss_state == PANTHER_BOSS_RECOVERING) {
+      v.desc = "You killed the mini boss.";
+      this->item_mini_boss_head_1 = true;
+      this->mini_boss_1_killed = true;
+    } else {
+      v.desc = "You swing your sword but the panther comes upon you.";
+      DONE(v);
+      return v;
+    }
   }
   if (this->mini_boss_1_killed) {
     ADD_OPT(v, "Go back out", this->set_room(AS_ROOM(TheWildHall::lobby)));
     return v;
   }
   ADD_OPT(v, "Run away", this->set_room(AS_ROOM(TheWildHall::lobby)));
+  ADD_OPT(v, "Dodge to the left", nullptr);
+  ADD_OPT(v, "Dodge to the right", nullptr);
   if (this->held_item == ITEM_SWORD) {
-    ADD_OPT(v, "Hit mini boss", nullptr);
+    ADD_OPT(v, "Swing sword", nullptr);
+  }
+  int outcome = this->roll_dice(2);
+  if (this->panther_boss_side == outcome) {
+    v.desc = "The panther is still recovering from its recent pounce.";
+    this->panther_boss_state = PANTHER_BOSS_RECOVERING;
+  } else {
+    if (outcome == PANTHER_BOSS_LEFT) {
+      v.desc = "The panther prepares to pounce to your left.";
+    }
+    if (outcome == PANTHER_BOSS_RIGHT) {
+      v.desc = "The panther prepares to pounce to your right.";
+    }
+    this->panther_boss_state = PANTHER_BOSS_POUNCING;
+    this->panther_boss_side = outcome;
   }
   return v;
 }
@@ -106,7 +165,7 @@ View TheWildHall::altar_room() {
       this->item_mini_boss_head_2 = false;
     }
     this->held_item = NO_ITEM;
-    if (this->heads_placed_on_dais++ == 2) {
+    if (++this->heads_placed_on_dais == 2) {
       v.desc += " The door opens.";
     }
   }
@@ -179,6 +238,7 @@ View TheWildHall::vine_corridor() {
     if (this->prev_command == "Give up") {
       v.desc = "You give up and the vines rip you in half.";
       DONE(v);
+      return v;
     } else if (this->prev_command == "Swing sword") {
       v.desc = "You swing your sword at the vines.";
       this->vines_attacking = false;
@@ -225,24 +285,26 @@ View TheWildHall::puzzle_room() {
     v.desc = "You start the puzzle over again.";
   }
   if (this->prev_command == "Place the raptor piece") {
-    this->puzzle_pieces[this->puzzle_pieces_placed++] = 0;
+    this->puzzle_pieces[this->puzzle_pieces_placed++] = PUZZLE_PIECE_RAPTOR;
     v.desc = "You place the raptor piece.";
   }
   if (this->prev_command == "Place the other piece") {
-    this->puzzle_pieces[this->puzzle_pieces_placed++] = 1;
+    this->puzzle_pieces[this->puzzle_pieces_placed++] = PUZZLE_PIECE_OTHER;
     v.desc = "You place the other piece.";
   }
   if (this->prev_command == "Place the lion piece") {
-    this->puzzle_pieces[this->puzzle_pieces_placed++] = 2;
+    this->puzzle_pieces[this->puzzle_pieces_placed++] = PUZZLE_PIECE_LION;
     v.desc = "You place the lion piece.";
   }
   if (this->prev_command == "Place the gorilla piece") {
-    this->puzzle_pieces[this->puzzle_pieces_placed++] = 3;
+    this->puzzle_pieces[this->puzzle_pieces_placed++] = PUZZLE_PIECE_GORILLA;
     v.desc = "You place the gorilla piece.";
   }
   if (this->puzzle_pieces_placed == 4) {
-    bool correct = (this->puzzle_pieces[0] == 2) && (this->puzzle_pieces[1] == 3) &&
-                   (this->puzzle_pieces[2] == 0) && (this->puzzle_pieces[3] == 1);
+    bool correct = (this->puzzle_pieces[0] == PUZZLE_PIECE_LION) &&
+                   (this->puzzle_pieces[1] == PUZZLE_PIECE_GORILLA) &&
+                   (this->puzzle_pieces[2] == PUZZLE_PIECE_RAPTOR) &&
+                   (this->puzzle_pieces[3] == PUZZLE_PIECE_OTHER);
     if (correct) {
       v.desc += " Correct! Here's the key.";
       this->item_key = true;
@@ -261,16 +323,16 @@ View TheWildHall::puzzle_room() {
   bool piece_placed_lion = false;
   bool piece_placed_gorilla = false;
   for (int a = 0; a < this->puzzle_pieces_placed; a++) {
-    if (this->puzzle_pieces[a] == 0) {
+    if (this->puzzle_pieces[a] == PUZZLE_PIECE_RAPTOR) {
       piece_placed_raptor = true;
     }
-    if (this->puzzle_pieces[a] == 1) {
+    if (this->puzzle_pieces[a] == PUZZLE_PIECE_OTHER) {
       piece_placed_other = true;
     }
-    if (this->puzzle_pieces[a] == 2) {
+    if (this->puzzle_pieces[a] == PUZZLE_PIECE_LION) {
       piece_placed_lion = true;
     }
-    if (this->puzzle_pieces[a] == 3) {
+    if (this->puzzle_pieces[a] == PUZZLE_PIECE_GORILLA) {
       piece_placed_gorilla = true;
     }
   }
@@ -292,29 +354,139 @@ View TheWildHall::puzzle_room() {
 
 View TheWildHall::mini_boss_2() {
   View v = this->new_view();
-  // TODO write mini-boss
-  v.desc = "You stand within the second mini boss room";
-  if (this->entered_room) {
-    v.desc = "You enter the second mini boss room";
-  }
   if (this->mini_boss_2_killed) {
     v.desc = "You stand within the dead second mini boss room";
     if (this->entered_room) {
       v.desc = "You enter the dead second mini boss room";
     }
+  } else if (this->entered_room) {
+    v.desc = "You enter the second mini boss room. The raptor hisses at you.";
+    ADD_OPT(v, "Continue", nullptr);
+    return v;
   }
-  if (this->prev_command == "Hit mini boss") {
-    v.desc = "You killed the mini boss";
-    this->item_mini_boss_head_2 = true;
-    this->mini_boss_2_killed = true;
+  if (this->prev_command == "Pick up sand") {
+    if (this->raptor_boss_action == RAPTOR_BOSS_HISS) {
+      this->item_sand = true;
+      v.desc = "You pick up some sand as the raptor hisses.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    }
+    if (this->raptor_boss_action == RAPTOR_BOSS_STALK) {
+      this->item_sand = true;
+      v.desc = "You pick up some sand while the raptor stalks about.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    }
+    if (this->raptor_boss_action == RAPTOR_BOSS_CHARGE) {
+      v.desc = "You get shredded by the raptor.";
+      DONE(v);
+      return v;
+    }
+    if (this->raptor_boss_action == RAPTOR_BOSS_STUNNED) {
+      this->raptor_boss_action = RAPTOR_BOSS_HISS;
+      this->item_sand = true;
+      v.desc = "You pick up some sand while the raptor is stunned.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    }
+  }
+  if (this->prev_command == "Duck and roll") {
+    if (this->raptor_boss_action == RAPTOR_BOSS_HISS) {
+      v.desc = "You duck and roll as the raptor claws you.";
+      DONE(v);
+      return v;
+    }
+    if (this->raptor_boss_action == RAPTOR_BOSS_STALK) {
+      v.desc = "You duck and roll away from the raptor as it stalks.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    }
+    if (this->raptor_boss_action == RAPTOR_BOSS_CHARGE) {
+      v.desc = "You duck and roll out of the raptor's charge.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    }
+    if (this->raptor_boss_action == RAPTOR_BOSS_STUNNED) {
+      this->raptor_boss_action = RAPTOR_BOSS_HISS;
+      v.desc = "You duck and roll. The beast is blinking its eyes.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    }
+  }
+  if (this->prev_command == "Throw sand") {
+    if (this->raptor_boss_action == RAPTOR_BOSS_HISS) {
+      this->item_sand = false;
+      this->raptor_boss_action = RAPTOR_BOSS_STUNNED;
+      v.desc = "You throw some sand and stun the raptor.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    }
+    if (this->raptor_boss_action == RAPTOR_BOSS_STALK) {
+      v.desc = "You throw some sand but the raptor slices at you.";
+      DONE(v);
+      return v;
+    }
+    if (this->raptor_boss_action == RAPTOR_BOSS_CHARGE) {
+      v.desc = "You throw some sand but the raptor rends you in half.";
+      DONE(v);
+      return v;
+    }
+    if (this->raptor_boss_action == RAPTOR_BOSS_STUNNED) {
+      this->item_sand = false;
+      v.desc = "You throw sand. The beast is already stunned.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    }
+  }
+  if (this->prev_command == "Swing sword") {
+    if (this->raptor_boss_action == RAPTOR_BOSS_HISS) {
+      v.desc = "You swing your sword and the beast jumps back.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    }
+    if (this->raptor_boss_action == RAPTOR_BOSS_STALK) {
+      v.desc = "You swing your sword but the raptor slices at you.";
+      DONE(v);
+      return v;
+    }
+    if (this->raptor_boss_action == RAPTOR_BOSS_CHARGE) {
+      v.desc = "You swing your sword but the raptor rends you in half.";
+      DONE(v);
+      return v;
+    }
+    if (this->raptor_boss_action == RAPTOR_BOSS_STUNNED) {
+      this->item_mini_boss_head_2 = true;
+      this->mini_boss_2_killed = true;
+      v.desc = "You killed the mini boss";
+    }
   }
   if (this->mini_boss_2_killed) {
     ADD_OPT(v, "Go back out", this->set_room(AS_ROOM(TheWildHall::altar_room)));
     return v;
   }
   ADD_OPT(v, "Run away", this->set_room(AS_ROOM(TheWildHall::altar_room)));
+  if (this->raptor_boss_action == RAPTOR_BOSS_STUNNED) {
+    v.desc = "The raptor is stunned";
+  } else {
+    int outcome = this->roll_dice(7);
+    if (outcome == 0) {
+      this->raptor_boss_action = RAPTOR_BOSS_HISS;
+      v.desc = "The raptor hisses at you.";
+    } else if (outcome < 4) {
+      this->raptor_boss_action = RAPTOR_BOSS_STALK;
+      v.desc = "The raptor stalks about the room.";
+    } else {
+      this->raptor_boss_action = RAPTOR_BOSS_CHARGE;
+      v.desc = "The raptor charges at you.";
+    }
+  }
+  ADD_OPT(v, "Pick up sand", nullptr);
+  ADD_OPT(v, "Duck and roll", nullptr);
+  if (this->held_item == ITEM_SAND) {
+    ADD_OPT(v, "Throw sand", nullptr);
+  }
   if (this->held_item == ITEM_SWORD) {
-    ADD_OPT(v, "Hit mini boss", nullptr);
+    ADD_OPT(v, "Swing sword", nullptr);
   }
   return v;
 }
