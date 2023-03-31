@@ -16,6 +16,9 @@
 #define PANTHER_BOSS_LEFT 1
 #define PANTHER_BOSS_POUNCING 0
 #define PANTHER_BOSS_RECOVERING 1
+#define CHIMERA_BOSS_FIRE 0
+#define CHIMERA_BOSS_LEAP 1
+#define CHIMERA_BOSS_RECOVER 2
 
 TheWildHall::TheWildHall() : Dungeon(AS_ROOM(TheWildHall::lobby)) {}
 
@@ -515,26 +518,77 @@ View TheWildHall::poison_room() {
 
 View TheWildHall::boss_pit() {
   View v = this->new_view();
-  // TODO write boss
-  v.desc = "You stand in the boss pit.";
   if (this->entered_room) {
     v.desc = "You climb down into the boss pit.";
+    ADD_OPT(v, "Continue", nullptr);
+    return v;
+  }
+  if (this->prev_command == "Dodge") {
+    if (this->chimera_boss_action == CHIMERA_BOSS_FIRE) {
+      v.desc = "You leap away from the boss's fire.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    }
+    if (this->chimera_boss_action == CHIMERA_BOSS_LEAP) {
+      v.desc = "You leap away from the boss as it pounces to you.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    }
+    if (this->chimera_boss_action == CHIMERA_BOSS_RECOVER) {
+      v.desc = "You leap away from the boss. It regains its bearings.";
+      ADD_OPT(v, "Continue", nullptr);
+      return v;
+    }
+  }
+  if (this->prev_command == "Swing sword") {
+    if (this->chimera_boss_action == CHIMERA_BOSS_FIRE) {
+      v.desc = "You swing your sword and are burnt to a crisp.";
+      DONE(v);
+      return v;
+    }
+    if (this->chimera_boss_action == CHIMERA_BOSS_LEAP) {
+      v.desc = "You swing your sword but the boss pounces onto you.";
+      DONE(v);
+      return v;
+    }
+    if (this->chimera_boss_action == CHIMERA_BOSS_RECOVER) {
+      if (this->sword_enchanted) {
+        v.desc = "You swipe at the boss and it burns.";
+        this->chimera_boss_health--;
+        if (this->chimera_boss_health == 2) {
+          v.desc += " The first head screams out in pain.";
+          ADD_OPT(v, "Continue", nullptr);
+        }
+        if (this->chimera_boss_health == 1) {
+          v.desc += " The second head screams out in pain.";
+          ADD_OPT(v, "Continue", nullptr);
+        }
+        if (this->chimera_boss_health == 0) {
+          v.desc += " It dies. You win!";
+          DONE(v);
+        }
+      } else {
+        v.desc = "You swipe at the boss and it heals itself.";
+        ADD_OPT(v, "Continue", nullptr);
+      }
+      return v;
+    }
   }
   ADD_OPT(v, "Dodge", nullptr);
   if (this->held_item == ITEM_SWORD) {
     ADD_OPT(v, "Swing sword", nullptr);
   }
-  if (this->prev_command == "Dodge") {
-    v.desc = "You dodge an attack from the boss but it kills you anyway.";
-    DONE(v);
+  if (this->chimera_boss_action == CHIMERA_BOSS_LEAP) {
+    this->chimera_boss_action = CHIMERA_BOSS_RECOVER;
+  } else {
+    this->chimera_boss_action = this->roll_dice(2);
   }
-  if (this->prev_command == "Swing sword") {
-    if (this->sword_enchanted) {
-      v.desc = "You poisoned and killed the boss!";
-    } else {
-      v.desc = "The boss is immune to your sword and it kills you.";
-    }
-    DONE(v);
+  if (this->chimera_boss_action == CHIMERA_BOSS_FIRE) {
+    v.desc = "The boss prepares to breath fire.";
+  } else if (this->chimera_boss_action == CHIMERA_BOSS_LEAP) {
+    v.desc = "The boss leaps back onto a nearby wall.";
+  } else {
+    v.desc = "The boss is trying to regain its bearings.";
   }
   return v;
 }

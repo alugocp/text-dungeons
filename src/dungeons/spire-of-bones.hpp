@@ -2,11 +2,14 @@
 
 class SpireOfBones : public Dungeon {
 private:
+  // Items
   bool item_rope = false;
   bool item_boss_key = false;
   bool item_bow = false;
   bool item_axe = false;
   bool item_lodestone = false;
+
+  // Progression logic
   bool skeleton_1_dead = false;
   bool lever_pulled_1 = false;
   bool lever_pulled_2 = false;
@@ -16,6 +19,8 @@ private:
   int skeletons_alive = 2;
   int thrown_pebbles = 0;
   int arrows = 0;
+
+  // Rooms
   View lobby();
   View hallway_to_spiral();
   View boss_room();
