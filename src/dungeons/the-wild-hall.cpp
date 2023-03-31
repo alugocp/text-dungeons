@@ -3,7 +3,6 @@
 #define ITEM_MINI_BOSS_HEAD_2 1
 #define ITEM_KEY 2
 #define ITEM_SWORD 3
-#define ITEM_SAND 4
 #define PUZZLE_PIECE_RAPTOR 0
 #define PUZZLE_PIECE_OTHER 1
 #define PUZZLE_PIECE_LION 2
@@ -28,7 +27,6 @@ View TheWildHall::search_bag() {
   ITEM_OPT(v, "Grab the second boss totem", this->item_mini_boss_head_2, ITEM_MINI_BOSS_HEAD_2);
   ITEM_OPT(v, "Grab the key", this->item_key, ITEM_KEY);
   ITEM_OPT(v, "Grab the sword", this->item_sword, ITEM_SWORD);
-  ITEM_OPT(v, "Grab the sand", this->item_sand, ITEM_SAND);
   return v;
 }
 
@@ -369,13 +367,13 @@ View TheWildHall::mini_boss_2() {
   }
   if (this->prev_command == "Pick up sand") {
     if (this->raptor_boss_action == RAPTOR_BOSS_HISS) {
-      this->item_sand = true;
+      this->holding_sand = true;
       v.desc = "You pick up some sand as the raptor hisses.";
       ADD_OPT(v, "Continue", nullptr);
       return v;
     }
     if (this->raptor_boss_action == RAPTOR_BOSS_STALK) {
-      this->item_sand = true;
+      this->holding_sand = true;
       v.desc = "You pick up some sand while the raptor stalks about.";
       ADD_OPT(v, "Continue", nullptr);
       return v;
@@ -387,7 +385,7 @@ View TheWildHall::mini_boss_2() {
     }
     if (this->raptor_boss_action == RAPTOR_BOSS_STUNNED) {
       this->raptor_boss_action = RAPTOR_BOSS_HISS;
-      this->item_sand = true;
+      this->holding_sand = true;
       v.desc = "You pick up some sand while the raptor is stunned.";
       ADD_OPT(v, "Continue", nullptr);
       return v;
@@ -418,7 +416,7 @@ View TheWildHall::mini_boss_2() {
   }
   if (this->prev_command == "Throw sand") {
     if (this->raptor_boss_action == RAPTOR_BOSS_HISS) {
-      this->item_sand = false;
+      this->holding_sand = false;
       this->raptor_boss_action = RAPTOR_BOSS_STUNNED;
       v.desc = "You throw some sand and stun the raptor.";
       ADD_OPT(v, "Continue", nullptr);
@@ -435,7 +433,7 @@ View TheWildHall::mini_boss_2() {
       return v;
     }
     if (this->raptor_boss_action == RAPTOR_BOSS_STUNNED) {
-      this->item_sand = false;
+      this->holding_sand = false;
       v.desc = "You throw sand. The beast is already stunned.";
       ADD_OPT(v, "Continue", nullptr);
       return v;
@@ -485,7 +483,7 @@ View TheWildHall::mini_boss_2() {
   }
   ADD_OPT(v, "Pick up sand", nullptr);
   ADD_OPT(v, "Duck and roll", nullptr);
-  if (this->held_item == ITEM_SAND) {
+  if (this->holding_sand) {
     ADD_OPT(v, "Throw sand", nullptr);
   }
   if (this->held_item == ITEM_SWORD) {

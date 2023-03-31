@@ -7,7 +7,6 @@ private:
   bool item_mini_boss_head_2 = false;
   bool item_sword = false;
   bool item_key = false;
-  bool item_sand = false;
 
   // Progression logic
   bool mini_boss_1_killed = false;
@@ -22,6 +21,7 @@ private:
   int puzzle_pieces[4];
 
   // Boss logic
+  bool holding_sand = false;
   int raptor_boss_action = 0;
   int panther_boss_state = 0;
   int panther_boss_side = 0;
