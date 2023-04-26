@@ -76,10 +76,16 @@ public:
 
 // Interface for main game class
 class Game {
+private:
+  Dungeon* dungeon;
+
 protected:
   virtual void display(View v) = 0;
+  virtual int wait_for_input() = 0;
+  bool frame();
 
 public:
+  Game();
   virtual void start() = 0;
 };
 

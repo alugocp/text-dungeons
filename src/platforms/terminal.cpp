@@ -3,60 +3,26 @@
 #include <stdlib.h>
 
 class TerminalGame : public Game {
-private:
-  Dungeon *dungeon = new GameSelect();
-
 protected:
   void display(View v);
+  int wait_for_input();
 
 public:
   void start();
 };
 
 void TerminalGame::start() {
-  srand(RNG_SEED);
   while (1) {
-    // Run dungeon room function and call display on result
-    View v = this->dungeon->curr_room.func();
-    if (this->dungeon->bag_enabled) {
-      ADD_OPT(v, "Open your bag", [this]() { this->dungeon->bag_open = true; });
-    }
-    if (this->dungeon->bag_open) {
-      v = this->dungeon->search_bag();
-      v.desc = "You open your bag.";
-      ADD_OPT(v, "Close the bag", [this]() { this->dungeon->held_item = NO_ITEM; });
-    }
-    this->display(v);
-
-    // Wait for input
-    int i = -1;
-    Room curr_room = this->dungeon->curr_room;
-    while (i < 0 || i > v.opts.size()) {
-      std::cin >> i;
-    }
-    if (i == 0) {
+    if (!this->frame()) {
       break;
     }
-    if (i <= v.opts.size()) {
-      this->dungeon->prev_command = v.opts[i - 1].text;
-      this->dungeon->bag_open = false;
-      if (v.opts[i - 1].func != nullptr) {
-        v.opts[i - 1].func();
-      }
-    }
-    std::cout << "\n";
-
-    // Set dungeon based on current one so that we can move between them
-    this->dungeon->entered_room = this->dungeon->curr_room.name != curr_room.name;
-    if (this->dungeon->entered_room) {
-      this->dungeon->prev_room = curr_room;
-      this->dungeon->held_item = NO_ITEM;
-    }
-    this->dungeon = this->dungeon->next_dungeon;
-    if (this->dungeon == NULL) {
-      this->dungeon = new GameSelect();
-    }
   }
+}
+
+int TerminalGame::wait_for_input() {
+  int i = -1;
+  std::cin >> i;
+  return i;
 }
 
 void TerminalGame::display(View v) {
