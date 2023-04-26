@@ -9,6 +9,9 @@ Use the following commands to build and run the game:
 # Builds the game
 make
 
+# Builds the game for Android
+make PLATFORM=android
+
 # Runs the game
 ./game
 
