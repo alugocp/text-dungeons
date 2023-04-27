@@ -82,11 +82,12 @@ private:
 protected:
   virtual void display(View v) = 0;
   virtual int wait_for_input() = 0;
-  bool frame();
+  virtual void teardown() = 0;
+  virtual void setup() = 0;
 
 public:
   Game();
-  virtual void start() = 0;
+  void start();
 };
 
 #endif
