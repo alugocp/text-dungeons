@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#define FONT_SIZE 24
+#define CHAR_WIDTH 12
+#define CHAR_HEIGHT 34
 
 // Represents a single line of displayed text
 struct DisplayText {
@@ -21,6 +24,8 @@ private:
   TTF_Font* font;
   std::vector<DisplayText> text_wrap(std::string msg, SDL_Color color, int cmd);
   std::vector<DisplayText> wrap_view(View v);
+  bool text_within_width(int l);
+  View view;
 
 protected:
   void display(View v);
@@ -28,6 +33,12 @@ protected:
   void teardown();
   void setup();
 };
+
+bool AndroidGame::text_within_width(int n) {
+  int w;
+  SDL_GetWindowSize(this->w, &w, NULL);
+  return n * CHAR_WIDTH < w;
+}
 
 // Text wrap algorithm implementation
 std::vector<DisplayText> AndroidGame::text_wrap(std::string msg, SDL_Color color, int cmd) {
@@ -37,13 +48,15 @@ std::vector<DisplayText> AndroidGame::text_wrap(std::string msg, SDL_Color color
   int next_end = 0;
   while (end < msg.length()) {
     next_end = start;
-    while ((next_end - start) * 12 < 500 && next_end < msg.length()) {
+    bool first = true;
+    while (this->text_within_width(next_end - start) && next_end < msg.length()) {
       next_end = msg.find(" ", next_end + 1);
       if (next_end == std::string::npos) {
         next_end = msg.length();
       }
-      if ((next_end - start) * 12 < 500) {
+      if (this->text_within_width(next_end - start) || first) {
         end = next_end;
+        first = false;
       }
     }
     lines.push_back({ msg.substr(start, end - start), color, cmd });
@@ -65,29 +78,27 @@ std::vector<DisplayText> AndroidGame::wrap_view(View v) {
 // Consumes user input for dungeon choices
 int AndroidGame::wait_for_input() {
   SDL_Event e;
-  while (true) {
-    if (SDL_PollEvent(&e) && e.type == SDL_QUIT) {
+  if (SDL_PollEvent(&e)) {
+    if (e.type == SDL_QUIT) {
       return 0;
     }
+    if (e.type == SDL_WINDOWEVENT) {
+      this->display(this->view);
+    }
   }
-
-  // TODO change this later
-  int i = -1;
-  std::cin >> i;
-  return i;
+  return -1;
 }
 
 // Draw call for a view
 void AndroidGame::display(View v) {
+  this->view = v;
   std::vector<DisplayText> lines = this->wrap_view(v);
   SDL_SetRenderDrawColor(this->r, 0, 0, 0, 0);
   SDL_RenderClear(this->r);
   for (auto line = lines.begin(); line != lines.end(); line++) {
-    int w, h;
     SDL_Surface* surface = TTF_RenderText_Solid(this->font, line->text.c_str(), line->color);
     SDL_Texture* msg = SDL_CreateTextureFromSurface(this->r, surface);
-    SDL_QueryTexture(msg, NULL, NULL, &w, &h);
-    SDL_Rect rect = { 0, (int)(line - lines.begin()) * h, w, h };
+    SDL_Rect rect = { 0, (int)(line - lines.begin()) * CHAR_HEIGHT, CHAR_WIDTH * (int)line->text.length(), CHAR_HEIGHT };
     SDL_RenderCopy(this->r, msg, NULL, &rect);
     SDL_DestroyTexture(msg);
     SDL_FreeSurface(surface);
@@ -106,14 +117,14 @@ void AndroidGame::setup() {
     SDL_Quit();
     exit(1);
   }
-  this->font = TTF_OpenFont("OpenSans-Regular.ttf", 24);
+  this->font = TTF_OpenFont("OpenSans-Regular.ttf", FONT_SIZE);
   if (this->font == nullptr) {
     printf("Error loading font: %s\n", SDL_GetError());
     TTF_Quit();
     SDL_Quit();
     exit(1);
   }
-  this->w = SDL_CreateWindow("Dungeons!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 300, 0);
+  this->w = SDL_CreateWindow("Dungeons!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 300, SDL_WINDOW_RESIZABLE);
   this->r = SDL_CreateRenderer(this->w, -1, 0);
 }
 
