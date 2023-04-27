@@ -77,7 +77,7 @@ public:
 // Interface for main game class
 class Game {
 private:
-  Dungeon* dungeon;
+  Dungeon *dungeon;
 
 protected:
   virtual void display(View v) = 0;

@@ -1,5 +1,5 @@
-#include "dungeons/game-select.hpp"
 #include "dungeon.hpp"
+#include "dungeons/game-select.hpp"
 #include <iostream>
 
 Game::Game() {
@@ -9,7 +9,7 @@ Game::Game() {
 
 void Game::start() {
   this->setup();
-  while(true) {
+  while (true) {
     // Run dungeon room function and call display on result
     View v = this->dungeon->curr_room.func();
     if (this->dungeon->bag_enabled) {

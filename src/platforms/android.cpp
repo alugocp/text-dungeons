@@ -1,9 +1,9 @@
 // SDL2 functions reference: https://wiki.libsdl.org/SDL2/CategoryAPI
 #include "dungeons/game-select.hpp"
-#include <iostream>
-#include <stdlib.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <iostream>
+#include <stdlib.h>
 #define FONT_SIZE 24
 #define CHAR_WIDTH 12
 #define CHAR_HEIGHT 34
@@ -20,7 +20,7 @@ class AndroidGame : public Game {
 private:
   SDL_Renderer *r;
   SDL_Window *w;
-  TTF_Font* font;
+  TTF_Font *font;
   View current_view;
   int scroll = 0;
   int max_scroll = 0;
@@ -71,7 +71,7 @@ std::vector<DisplayText> AndroidGame::text_wrap(std::string msg, SDL_Color color
         first = false;
       }
     }
-    lines.push_back({ msg.substr(start, end - start), color, cmd });
+    lines.push_back({msg.substr(start, end - start), color, cmd});
     start = end + 1;
   }
   return lines;
@@ -79,9 +79,10 @@ std::vector<DisplayText> AndroidGame::text_wrap(std::string msg, SDL_Color color
 
 // Properly displays an entire view's contents
 void AndroidGame::wrap_view(View v) {
-  this->current_lines = this->text_wrap(v.desc, { 255, 255, 255 }, -1);
+  this->current_lines = this->text_wrap(v.desc, {255, 255, 255}, -1);
   for (auto opt = v.opts.begin(); opt != v.opts.end(); opt++) {
-    std::vector<DisplayText> lines = this->text_wrap(opt->text, { 255, 255, 0 }, (int)(opt - v.opts.begin()) + 1);
+    std::vector<DisplayText> lines =
+        this->text_wrap(opt->text, {255, 255, 0}, (int)(opt - v.opts.begin()) + 1);
     this->current_lines.insert(this->current_lines.end(), lines.begin(), lines.end());
   }
 }
@@ -99,7 +100,7 @@ int AndroidGame::wait_for_input() {
 
     // Scroll handler
     if (e.type == SDL_MOUSEMOTION && this->mouse_down) {
-      this->scroll -= ((SDL_MouseMotionEvent*)&e)->yrel;
+      this->scroll -= ((SDL_MouseMotionEvent *)&e)->yrel;
       if (this->scroll > this->max_scroll) {
         this->scroll = this->max_scroll;
       }
@@ -115,7 +116,7 @@ int AndroidGame::wait_for_input() {
     }
     if (e.type == SDL_MOUSEBUTTONUP) {
       if (!scrolled) {
-        int line = (((SDL_MouseButtonEvent*)&e)->y + this->scroll) / CHAR_HEIGHT;
+        int line = (((SDL_MouseButtonEvent *)&e)->y + this->scroll) / CHAR_HEIGHT;
         if (line >= 0 && line < this->current_lines.size()) {
           int choice = this->current_lines.at(line).value;
           if (choice != -1) {
@@ -139,9 +140,10 @@ void AndroidGame::display(View v) {
   SDL_SetRenderDrawColor(this->r, 0, 0, 0, 0);
   SDL_RenderClear(this->r);
   for (auto line = this->current_lines.begin(); line != this->current_lines.end(); line++) {
-    SDL_Surface* surface = TTF_RenderText_Solid(this->font, line->text.c_str(), line->color);
-    SDL_Texture* msg = SDL_CreateTextureFromSurface(this->r, surface);
-    SDL_Rect rect = { 0, ((int)(line - this->current_lines.begin()) * CHAR_HEIGHT) - this->scroll, CHAR_WIDTH * (int)line->text.length(), CHAR_HEIGHT };
+    SDL_Surface *surface = TTF_RenderText_Solid(this->font, line->text.c_str(), line->color);
+    SDL_Texture *msg = SDL_CreateTextureFromSurface(this->r, surface);
+    SDL_Rect rect = {0, ((int)(line - this->current_lines.begin()) * CHAR_HEIGHT) - this->scroll,
+                     CHAR_WIDTH * (int)line->text.length(), CHAR_HEIGHT};
     SDL_RenderCopy(this->r, msg, NULL, &rect);
     SDL_DestroyTexture(msg);
     SDL_FreeSurface(surface);
@@ -167,7 +169,8 @@ void AndroidGame::setup() {
     SDL_Quit();
     exit(1);
   }
-  this->w = SDL_CreateWindow("Dungeons!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 300, SDL_WINDOW_RESIZABLE);
+  this->w = SDL_CreateWindow("Dungeons!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 300,
+                             SDL_WINDOW_RESIZABLE);
   this->r = SDL_CreateRenderer(this->w, -1, 0);
 }
 
