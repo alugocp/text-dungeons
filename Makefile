@@ -2,7 +2,7 @@ SRC := $(wildcard src/*.cpp src/dungeons/*.cpp)
 OUT := $(foreach source,$(SRC),out/$(subst /,.,$(patsubst src/%.cpp,%,$(source))).o)
 SRC_WITH_HEADERS := $(wildcard src/*.*pp src/**/*.*pp)
 FLAGS := -std=c++11 -I src -I /usr/include/SDL2
-LIBS := -L /usr/local/lib -lSDL2
+LIBS := -L /usr/lib/x86_64-linux-gnu -lSDL2 -lSDL2_ttf
 PLATFORM ?= terminal
 
 all: clean out/platforms.$(PLATFORM).o $(OUT) link
