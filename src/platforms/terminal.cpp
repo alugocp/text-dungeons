@@ -26,7 +26,7 @@ int TerminalGame::wait_for_input() {
 
 // Prints the view's contents to terminal
 void TerminalGame::display(View v) {
-  std::cout << v.desc << "\n\033[33m";
+  std::cout << "\n" << v.desc << "\n\033[33m";
   for (auto i = v.opts.begin(); i != v.opts.end(); i++) {
     std::cout << i - v.opts.begin() + 1 << ": " << (*i).text << "\n";
   }

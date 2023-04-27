@@ -1,5 +1,4 @@
 // SDL2 functions reference: https://wiki.libsdl.org/SDL2/CategoryAPI
-// SDL2 rendering text: https://stackoverflow.com/questions/22886500/how-to-render-text-in-sdl2
 #include "dungeons/game-select.hpp"
 #include <iostream>
 #include <stdlib.h>
@@ -22,10 +21,16 @@ private:
   SDL_Renderer *r;
   SDL_Window *w;
   TTF_Font* font;
+  View current_view;
+  int scroll = 0;
+  int max_scroll = 0;
+  bool scrolled = false;
+  bool mouse_down = false;
+  std::vector<DisplayText> current_lines;
+  int get_max_scroll();
   std::vector<DisplayText> text_wrap(std::string msg, SDL_Color color, int cmd);
-  std::vector<DisplayText> wrap_view(View v);
+  void wrap_view(View v);
   bool text_within_width(int l);
-  View view;
 
 protected:
   void display(View v);
@@ -33,6 +38,13 @@ protected:
   void teardown();
   void setup();
 };
+
+int AndroidGame::get_max_scroll() {
+  int h, max;
+  SDL_GetWindowSize(this->w, NULL, &h);
+  max = (this->current_lines.size() * CHAR_HEIGHT) - h;
+  return max > 0 ? max : 0;
+}
 
 bool AndroidGame::text_within_width(int n) {
   int w;
@@ -66,13 +78,12 @@ std::vector<DisplayText> AndroidGame::text_wrap(std::string msg, SDL_Color color
 }
 
 // Properly displays an entire view's contents
-std::vector<DisplayText> AndroidGame::wrap_view(View v) {
-  std::vector<DisplayText> lines = this->text_wrap(v.desc, { 255, 255, 255 }, -1);
+void AndroidGame::wrap_view(View v) {
+  this->current_lines = this->text_wrap(v.desc, { 255, 255, 255 }, -1);
   for (auto opt = v.opts.begin(); opt != v.opts.end(); opt++) {
-    std::vector<DisplayText> opt_lines = this->text_wrap(opt->text, { 255, 255, 0 }, (int)(opt - v.opts.begin()) + 1);
-    lines.insert(lines.end(), opt_lines.begin(), opt_lines.end());
+    std::vector<DisplayText> lines = this->text_wrap(opt->text, { 255, 255, 0 }, (int)(opt - v.opts.begin()) + 1);
+    this->current_lines.insert(this->current_lines.end(), lines.begin(), lines.end());
   }
-  return lines;
 }
 
 // Consumes user input for dungeon choices
@@ -83,7 +94,38 @@ int AndroidGame::wait_for_input() {
       return 0;
     }
     if (e.type == SDL_WINDOWEVENT) {
-      this->display(this->view);
+      this->display(this->current_view);
+    }
+
+    // Scroll handler
+    if (e.type == SDL_MOUSEMOTION && this->mouse_down) {
+      this->scroll -= ((SDL_MouseMotionEvent*)&e)->yrel;
+      if (this->scroll > this->max_scroll) {
+        this->scroll = this->max_scroll;
+      }
+      if (this->scroll < 0) {
+        this->scroll = 0;
+      }
+      this->scrolled = true;
+    }
+
+    // Click handler
+    if (e.type == SDL_MOUSEBUTTONDOWN) {
+      this->mouse_down = true;
+    }
+    if (e.type == SDL_MOUSEBUTTONUP) {
+      if (!scrolled) {
+        int line = (((SDL_MouseButtonEvent*)&e)->y + this->scroll) / CHAR_HEIGHT;
+        if (line >= 0 && line < this->current_lines.size()) {
+          int choice = this->current_lines.at(line).value;
+          if (choice != -1) {
+            this->scroll = 0;
+          }
+          return choice;
+        }
+      }
+      this->mouse_down = false;
+      this->scrolled = false;
     }
   }
   return -1;
@@ -91,14 +133,15 @@ int AndroidGame::wait_for_input() {
 
 // Draw call for a view
 void AndroidGame::display(View v) {
-  this->view = v;
-  std::vector<DisplayText> lines = this->wrap_view(v);
+  this->wrap_view(v);
+  this->current_view = v;
+  this->max_scroll = get_max_scroll();
   SDL_SetRenderDrawColor(this->r, 0, 0, 0, 0);
   SDL_RenderClear(this->r);
-  for (auto line = lines.begin(); line != lines.end(); line++) {
+  for (auto line = this->current_lines.begin(); line != this->current_lines.end(); line++) {
     SDL_Surface* surface = TTF_RenderText_Solid(this->font, line->text.c_str(), line->color);
     SDL_Texture* msg = SDL_CreateTextureFromSurface(this->r, surface);
-    SDL_Rect rect = { 0, (int)(line - lines.begin()) * CHAR_HEIGHT, CHAR_WIDTH * (int)line->text.length(), CHAR_HEIGHT };
+    SDL_Rect rect = { 0, ((int)(line - this->current_lines.begin()) * CHAR_HEIGHT) - this->scroll, CHAR_WIDTH * (int)line->text.length(), CHAR_HEIGHT };
     SDL_RenderCopy(this->r, msg, NULL, &rect);
     SDL_DestroyTexture(msg);
     SDL_FreeSurface(surface);

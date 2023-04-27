@@ -38,7 +38,6 @@ void Game::start() {
         v.opts[i - 1].func();
       }
     }
-    std::cout << "\n";
 
     // Set dungeon based on current one so that we can move between them
     this->dungeon->entered_room = this->dungeon->curr_room.name != curr_room.name;
