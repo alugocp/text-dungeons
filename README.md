@@ -6,11 +6,14 @@ The idea is to have a game without any fancy systems, graphics or narrative - ju
 Use the following commands to build and run the game:
 
 ```bash
-# Builds the game
+# Builds the game for terminal
 make
 
-# Builds the game for Android
-make PLATFORM=android
+# Sets up the game for Android
+make android
+
+# Compiles and installs the game for Android
+./deploy
 
 # Runs the game
 ./game
