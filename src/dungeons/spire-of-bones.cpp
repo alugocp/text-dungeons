@@ -542,7 +542,9 @@ View SpireOfBones::stone_room() {
         if (this->thrown_pebbles == 1) {
           v.desc += "A lonely pebble lies in a small mound of sand.";
         } else {
-          v.desc += " There are " + std::to_string(this->thrown_pebbles) +
+          std::string numeral = "";
+          numeral.push_back('0' + this->thrown_pebbles);
+          v.desc += " There are " + numeral +
                     " pebbles strewn about the ground among small dying fishes.";
         }
       }

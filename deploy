@@ -1,5 +1,6 @@
 #!/bin/bash
 # Link to build folder
+PROJECT="$(pwd)"
 rm -f build
 ln -s ~/SDL2-2.26.5/build build
 cd build/net.lugocorp.minidungeons
@@ -10,6 +11,13 @@ for FILE in $FILES
 do
   sed -i -e 's/#include "dungeons\//#include "/g' "app/jni/src/$FILE"
 done
+
+# Include SDL_ttf module and font asset
+ln -s ~/SDL2-2.26.5 app/jni/SDL
+ln -s ~/SDL2_ttf-2.20.2 app/jni/SDL_ttf
+sed -i -e 's/^LOCAL_SHARED_LIBRARIES.*/& SDL2_ttf/' app/jni/src/Android.mk
+mkdir app/src/main/assets
+ln "$PROJECT/OpenSans-Regular.ttf" app/src/main/assets/OpenSans-Regular.ttf
 
 # Initialize Gradle build
 ./gradlew installDebug
