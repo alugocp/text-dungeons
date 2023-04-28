@@ -1,0 +1,15 @@
+#!/bin/bash
+# Link to build folder
+rm -f build
+ln -s ~/SDL2-2.26.5/build build
+cd build/net.lugocorp.minidungeons
+
+# Fix broken include paths
+FILES=$(ls app/jni/src | grep -e "\.[ch]pp$")
+for FILE in $FILES
+do
+  sed -i -e 's/#include "dungeons\//#include "/g' "app/jni/src/$FILE"
+done
+
+# Initialize Gradle build
+./gradlew installDebug

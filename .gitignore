@@ -1,5 +1,6 @@
 /tests/result.txt
 /procgen/*.json
 /procgen/*.jpg
+/build
 /game
 /out
