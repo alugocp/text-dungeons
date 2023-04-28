@@ -4,9 +4,9 @@
 #include <SDL_ttf.h>
 #include <iostream>
 #include <stdlib.h>
-#define FONT_SIZE 24
-#define CHAR_WIDTH 12
-#define CHAR_HEIGHT 34
+#define FONT_SIZE 36
+#define CHAR_WIDTH 18
+#define CHAR_HEIGHT 48
 
 // Represents a single line of displayed text
 struct DisplayText {
@@ -81,6 +81,7 @@ std::vector<DisplayText> AndroidGame::text_wrap(std::string msg, SDL_Color color
 void AndroidGame::wrap_view(View v) {
   this->current_lines = this->text_wrap(v.desc, {255, 255, 255}, -1);
   for (auto opt = v.opts.begin(); opt != v.opts.end(); opt++) {
+    this->current_lines.push_back({"", {255, 255, 255}, -1}); // Blank line buffer for easier UI
     std::vector<DisplayText> lines =
         this->text_wrap(opt->text, {255, 255, 0}, (int)(opt - v.opts.begin()) + 1);
     this->current_lines.insert(this->current_lines.end(), lines.begin(), lines.end());
@@ -91,6 +92,8 @@ void AndroidGame::wrap_view(View v) {
 int AndroidGame::wait_for_input() {
   SDL_Event e;
   if (SDL_PollEvent(&e)) {
+    int h;
+    SDL_GetWindowSize(this->w, NULL, &h);
     if (e.type == SDL_QUIT) {
       return 0;
     }
@@ -99,24 +102,24 @@ int AndroidGame::wait_for_input() {
     }
 
     // Scroll handler
-    if (e.type == SDL_MOUSEMOTION && this->mouse_down) {
-      this->scroll -= ((SDL_MouseMotionEvent *)&e)->yrel;
+    if (e.type == SDL_FINGERMOTION && this->mouse_down) {
+      this->scroll -= (int)(((SDL_TouchFingerEvent *)&e)->dy * h);
       if (this->scroll > this->max_scroll) {
         this->scroll = this->max_scroll;
       }
       if (this->scroll < 0) {
         this->scroll = 0;
       }
-      this->scrolled = true;
+      // this->scrolled = true;
     }
 
     // Click handler
-    if (e.type == SDL_MOUSEBUTTONDOWN) {
+    if (e.type == SDL_FINGERDOWN) {
       this->mouse_down = true;
     }
-    if (e.type == SDL_MOUSEBUTTONUP) {
+    if (e.type == SDL_FINGERUP) {
       if (!scrolled) {
-        int line = (((SDL_MouseButtonEvent *)&e)->y + this->scroll) / CHAR_HEIGHT;
+        int line = ((int)(((SDL_TouchFingerEvent *)&e)->y * h) + this->scroll) / CHAR_HEIGHT;
         if (line >= 0 && line < this->current_lines.size()) {
           int choice = this->current_lines.at(line).value;
           if (choice != -1) {
