@@ -14,6 +14,10 @@ do
   sed -i -e 's/#include "dungeons\//#include "/g' "app/jni/src/$FILE"
 done
 
+# Update Android resources
+rm -rf app/src/main/res
+cp -r "$PROJECT/android-project/app/src/main/res" app/src/main/res
+
 # Include SDL_ttf module and font asset
 mkdir app/src/main/assets
 ln -s ~/SDL2-2.26.5 app/jni/SDL
