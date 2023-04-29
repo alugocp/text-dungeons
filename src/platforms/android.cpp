@@ -5,8 +5,8 @@
 #include <iostream>
 #include <stdlib.h>
 #define FONT_SIZE 36
-#define CHAR_WIDTH 18
-#define CHAR_HEIGHT 48
+#define CHAR_WIDTH 36
+#define CHAR_HEIGHT 96
 
 // Represents a single line of displayed text
 struct DisplayText {
@@ -91,8 +91,8 @@ void AndroidGame::wrap_view(View v) {
 int AndroidGame::wait_for_input() {
   SDL_Event e;
   if (SDL_PollEvent(&e)) {
-    int h;
-    SDL_GetWindowSize(this->w, NULL, &h);
+    int w, h;
+    SDL_GetWindowSize(this->w, &w, &h);
     if (e.type == SDL_QUIT) {
       return 0;
     }
@@ -118,11 +118,13 @@ int AndroidGame::wait_for_input() {
     if (e.type == SDL_FINGERUP) {
       int line = ((int)(((SDL_TouchFingerEvent *)&e)->y * h) + this->scroll) / CHAR_HEIGHT;
       if (line >= 0 && line < this->current_lines.size()) {
-        int choice = this->current_lines.at(line).value;
-        if (choice != -1) {
-          this->scroll = 0;
+        if ((int)(((SDL_TouchFingerEvent *)&e)->x * w) <= this->current_lines.at(line).text.length() * CHAR_WIDTH) {
+          int choice = this->current_lines.at(line).value;
+          if (choice != -1) {
+            this->scroll = 0;
+          }
+          return choice;
         }
-        return choice;
       }
       this->mouse_down = false;
     }
