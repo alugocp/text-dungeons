@@ -24,7 +24,6 @@ private:
   View current_view;
   int scroll = 0;
   int max_scroll = 0;
-  bool mouse_down = false;
   std::vector<DisplayText> current_lines;
   int get_max_scroll();
   std::vector<DisplayText> text_wrap(std::string msg, SDL_Color color, int cmd);
@@ -101,7 +100,7 @@ int AndroidGame::wait_for_input() {
     }
 
     // Scroll handler
-    if (e.type == SDL_FINGERMOTION && this->mouse_down) {
+    if (e.type == SDL_FINGERMOTION) {
       this->scroll -= (int)(((SDL_TouchFingerEvent *)&e)->dy * h);
       if (this->scroll > this->max_scroll) {
         this->scroll = this->max_scroll;
@@ -109,12 +108,10 @@ int AndroidGame::wait_for_input() {
       if (this->scroll < 0) {
         this->scroll = 0;
       }
+      this->display(this->current_view);
     }
 
     // Click handler
-    if (e.type == SDL_FINGERDOWN) {
-      this->mouse_down = true;
-    }
     if (e.type == SDL_FINGERUP) {
       int line = ((int)(((SDL_TouchFingerEvent *)&e)->y * h) + this->scroll) / CHAR_HEIGHT;
       if (line >= 0 && line < this->current_lines.size()) {
@@ -126,7 +123,6 @@ int AndroidGame::wait_for_input() {
           return choice;
         }
       }
-      this->mouse_down = false;
     }
   }
   return -1;
